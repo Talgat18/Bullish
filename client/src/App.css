@@ -1,0 +1,55 @@
+.remove-btn {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 1000ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0.01;
+  transition: opacity 1000ms ease-in;
+}
+
+#h-img1 {
+  margin: 0.2rem;
+}
+#h-img2 {
+  margin: 0.2rem;
+}
+
+#h-img3 {
+  margin: 0.2rem;
+}
+
+#btn-pause {
+  color: #d75a4a;
+  border: 2px solid #d75a4a;
+  background-color: #d75a4a;
+  border-radius: 200px;
+  border-width: 5px;
+  margin-bottom: 5%;
+}
+#seconds {
+  color: #d75a4a;
+}
+
+.bottom-marks {
+  margin-bottom: 10%;
+}
+.container {
+  color: #fff;
+}
+.stock-list {
+  margin-top: 5%;
+}
