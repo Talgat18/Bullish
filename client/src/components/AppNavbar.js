@@ -59,7 +59,7 @@ class AppNavbar extends Component {
           </span>
         </NavItem>
         <NavItem>
-          <NavLink href="/test">Test</NavLink>{" "}
+          <NavLink href="/test">Test DnD</NavLink>{" "}
         </NavItem>
         <NavItem>
           <NavLink href="/news">News</NavLink>{" "}

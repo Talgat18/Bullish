@@ -28,3 +28,8 @@ export const REFRESHED_TOKEN = "REFRESHED_TOKEN";
 
 export const GET_STOCK_LIST = "GET_STOCK_LIST";
 export const GET_STOCK_LIST_FAILED = "GET_STOCK_LIST_FAILED";
+
+
+export const GETTING_NEWS = "GETTING_NEWS";
+export const GOT_NEWS = "GOT_NEWS";
+export const FAILED_NEWS = "FAILED_NEWS";

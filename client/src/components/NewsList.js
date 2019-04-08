@@ -4,7 +4,8 @@ import {
   ListGroup,
   ListGroupItem,
   Button,
-  Spinner
+  Spinner,
+  Media
 } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
@@ -14,7 +15,7 @@ import { getInfo, getStockList } from "../actions/stockActions";
 import { refreshToken } from "../actions/authActions";
 import PropTypes from "prop-types";
 
-class StockList extends Component {
+class News extends Component {
   static propTypes = {
     getItems: PropTypes.func.isRequired,
     stock: PropTypes.object.isRequired,
@@ -22,12 +23,13 @@ class StockList extends Component {
   };
 
   state = {
-    opa: 0
+    title: 0,
+    content: 0
   };
 
   componentDidMount() {
-    this.props.getStockList();
     this.props.getInfo();
+    this.props.getNews();
   }
 
   onDeleteClick = id => {
@@ -52,43 +54,21 @@ class StockList extends Component {
       />
     );
 
-    const { stocks, balance, loading } = this.props.stock;
+    const { articles, randomIndex } = this.props.news;
+   
+      console.log(randomIndex)
 
-    const test = (
-      <ListGroup className="stock-list">
-        <TransitionGroup className="shopping-list">
-          {stocks.map(({ id, name }) => (
-            <CSSTransition key={id} timeout={500} classNames="fade">
-              <ListGroupItem>
-                {name}{" "}
-                {this.props.isAuthenticated ? (
-                  <Button
-                    outline
-                    color="success"
-                    onClick={this.onDeleteClick.bind(this, id)}
-                  >
-                    Buy
-                  </Button>
-                ) : null}
-              </ListGroupItem>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-      </ListGroup>
-    );
     return (
       <Container className="stock-container" style={{ color: "black" }}>
-        <Button onClick={this.test}>Test Button</Button> {}
-        <Button onClick={this.refreshingToken}>RefreshTokenBTN</Button> {}
-        <span className="navbar-text mr-3">
-          <strong> {balance ? `Balance - ${balance.balance}` : " "}</strong>
-        </span>
-        {loading ? spinner : test}
-        {/* <ListGroup className="mt-5">
-          {stocks.map(({ name }) => (
-            <ListGroupItem>{name}</ListGroupItem>
-          ))}
-        </ListGroup> */}
+        <Button onClick={this.test}>Get random news!</Button> {}
+        <Media>
+          <Media body>
+            <Media heading>
+              {articles[randomIndex] ? articles[randomIndex].title : ""}
+            </Media>
+            {articles[randomIndex] ? articles[randomIndex].content : ""}
+          </Media>
+        </Media>
       </Container>
     );
   }
@@ -98,10 +78,11 @@ const mapStateToProps = state => ({
   stock: state.stock,
   isAuthenticated: state.auth.isAuthenticated,
   score: state.auth.score,
-  ID: state.auth.user
+  ID: state.auth.user,
+  news: state.news
 });
 
 export default connect(
   mapStateToProps,
   { getItems, deleteItem, getInfo, refreshToken, getStockList, getNews }
-)(StockList);
+)(News);

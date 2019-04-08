@@ -39,7 +39,8 @@ export default function(state = initialState, action) {
       refreshToken();
       return {
         ...state,
-        good:false
+        good:false,
+        loading: false
       };
     case GET_STOCK_LIST:
       return {
