@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "./components/routes/Home";
 import Buy from "./components/routes/Buy";
+import News from "./components/routes/News";
+import Test from "./components/routes/Test";
 import Balance from "./components/routes/BalanceR";
 import NotFound from "./components/routes/NotFound";
 //import { Container } from "reactstrap";
@@ -9,6 +11,7 @@ import NotFound from "./components/routes/NotFound";
 import { Provider } from "react-redux";
 import store from "./store";
 import { checkToken } from "./actions/authActions";
+import { getInfo } from "./actions/stockActions";
 //loadUser, 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -17,6 +20,7 @@ class App extends Component {
   componentDidMount() {
     //store.dispatch(loadUser());
     store.dispatch(checkToken());
+    store.dispatch(getInfo());
   }
   render() {
     return (
@@ -24,7 +28,9 @@ class App extends Component {
         <React.Fragment>
           <div className="App">
             <Switch>
+            <Route path="/test" component={Test} />
               <Route path="/buy" component={Buy} />
+              <Route path="/news" component={News} />
               <Route path="/home" component={Home} />
               <Route path="/balance" component={Balance} />
               <Route path="/not-found"  component={NotFound} /> 

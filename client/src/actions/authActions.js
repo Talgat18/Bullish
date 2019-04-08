@@ -34,6 +34,7 @@ export const loadUser = () => (dispatch, getState) => {
 
 // Register User
 export const register = ({ login, password }) => dispatch => {
+  dispatch({ type: USER_LOADING });
   // Headers
   const config = {
     headers: {
@@ -58,13 +59,21 @@ export const register = ({ login, password }) => dispatch => {
       });
     })
     .catch(err => {
-      console.log(err);
+      dispatch(
+        returnErrors(
+          err.response.data.invalidFields[0].message,
+          err.response.status,
+          "REGISTER_FAIL"
+        )
+      );
+      console.log(err.response.status);
       dispatch({ type: REGISTER_FAIL });
     });
 };
 
 // Login User
 export const login = ({ login, password }) => dispatch => {
+  dispatch({ type: USER_LOADING });
   // Headers
   const config = {
     headers: {
@@ -83,17 +92,22 @@ export const login = ({ login, password }) => dispatch => {
     )
     .then(res => {
       console.log(res);
+      res.data.name = login;
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data
+        payload: res.data,
+        
       });
     })
-    .catch((err, res) => {
+    .catch(err => {
       dispatch(
-        returnErrors(err.response.message, err.response.code, "LOGIN_FAIL")
+        returnErrors(
+          err.response.data.invalidFields[0].message,
+          err.response.status,
+          "LOGIN_FAIL"
+        )
       );
-      console.log(err);
-      console.log(res);
+      console.log(err.response.status);
       dispatch({ type: LOGIN_FAIL });
     });
 };
@@ -133,7 +147,7 @@ export const refreshToken = () => dispatch => {
     }
   };
 
-  const refreshToken = localStorage.getItem('refreshToken')
+  const refreshToken = localStorage.getItem("refreshToken");
 
   // Request body
   const body = JSON.stringify({ refreshToken });
@@ -176,14 +190,13 @@ export const tokenConfig = getState => {
   return config;
 };
 
-export const checkToken = () => (dispatch) => {
+export const checkToken = () => dispatch => {
   // User loading
   dispatch({ type: CHECK_TOKEN });
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (token) {
     dispatch({ type: TOKEN_UP });
   } else {
     dispatch({ type: TOKEN_DOWN });
   }
-  
 };

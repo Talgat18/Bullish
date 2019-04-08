@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import {
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Spinner
+} from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
 import { getItems, deleteItem } from "../actions/itemActions";
@@ -12,6 +18,10 @@ class StockList extends Component {
     getItems: PropTypes.func.isRequired,
     stock: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool
+  };
+
+  state = {
+    opa: 0
   };
 
   componentDidMount() {
@@ -32,36 +42,46 @@ class StockList extends Component {
   };
 
   render() {
-    const { stocks } = this.props.stock;
-    const { balance } = this.props.stock;
+    const spinner = (
+      <Spinner
+        className="spinner"
+        style={{ width: "10rem", height: "10rem" }}
+        color="warning"
+      />
+    );
+
+    const { stocks, balance, loading } = this.props.stock;
+
+    const test = (
+      <ListGroup className="stock-list" >
+        <TransitionGroup className="shopping-list">
+          {stocks.map(({ id, name }) => (
+            <CSSTransition key={id} timeout={500} classNames="fade">
+              <ListGroupItem>
+                {name}{" "}
+                {this.props.isAuthenticated ? (
+                  <Button
+                    outline
+                    color="success"
+                    onClick={this.onDeleteClick.bind(this, id)}
+                  >
+                    Buy
+                  </Button>
+                ) : null}
+              </ListGroupItem>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </ListGroup>
+    );
     return (
-      <Container style={{ color: "black" }}>
+      <Container className="stock-container" style={{ color: "black" }}>
         <Button onClick={this.test}>Test Button</Button> {}
         <Button onClick={this.refreshingToken}>RefreshTokenBTN</Button> {}
         <span className="navbar-text mr-3">
           <strong> {balance ? `Balance - ${balance.balance}` : " "}</strong>
         </span>
-        <ListGroup className="stock-list">
-          <TransitionGroup className="shopping-list">
-            {stocks.map(({ id, name }) => (
-              <CSSTransition key={id} timeout={500} classNames="fade">
-                <ListGroupItem>
-                  {name}{" "}
-                  {this.props.isAuthenticated ? (
-                    <Button
-                      block
-                      outline
-                      color="success"
-                      onClick={this.onDeleteClick.bind(this, id)}
-                    >
-                      Buy
-                    </Button>
-                  ) : null}
-                </ListGroupItem>
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        </ListGroup>
+        {loading ? spinner : test}
         {/* <ListGroup className="mt-5">
           {stocks.map(({ name }) => (
             <ListGroupItem>{name}</ListGroupItem>

@@ -9,11 +9,13 @@ import {
   Label,
   Input,
   NavLink,
-  Alert
+  Alert,
+  Spinner
 } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../actions/authActions";
+import { getInfo } from "../../actions/stockActions";
 import { clearErrors } from "../../actions/errorActions";
 
 class LoginModal extends Component {
@@ -36,7 +38,7 @@ class LoginModal extends Component {
     if (error !== prevProps.error) {
       // Check for register error
       if (error.id === "LOGIN_FAIL") {
-        this.setState({ msg: error.msg.msg });
+        this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
       }
@@ -71,10 +73,13 @@ class LoginModal extends Component {
       password
     };
     // Attempt to login
+ 
     this.props.login(user);
   };
 
   render() {
+    const { isLoading } = this.props.auth;
+    const spinner = <Spinner type="grow" color="warning" />;
     return (
       <div>
         <NavLink onClick={this.toggle} href="#">
@@ -82,7 +87,10 @@ class LoginModal extends Component {
         </NavLink>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Login</ModalHeader>
+          <ModalHeader toggle={this.toggle}>
+            Login {"          "}
+            {isLoading ? spinner : " "}
+          </ModalHeader>
           <ModalBody>
             {this.state.msg ? (
               <Alert color="danger">{this.state.msg}</Alert>
@@ -90,6 +98,7 @@ class LoginModal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="item">Login</Label>
+
                 <Input
                   type="login"
                   name="login"
@@ -107,7 +116,12 @@ class LoginModal extends Component {
                   className="mb-3"
                   onChange={this.onChange} // use in typeracer
                 />
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
+                <Button
+                  disabled={isLoading}
+                  color="dark"
+                  style={{ marginTop: "2rem" }}
+                  block
+                >
                   Login
                 </Button>
               </FormGroup>
@@ -121,10 +135,11 @@ class LoginModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.error,
+  auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
-  { login, clearErrors }
+  { login, clearErrors, getInfo }
 )(LoginModal);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import AppNavbar from "../AppNavbar";
 
-export default class Home extends Component {
+export default class News extends Component {
   render() {
     return (
       <div>

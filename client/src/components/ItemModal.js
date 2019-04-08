@@ -52,6 +52,7 @@ class ItemModal extends Component {
   };
 
   render() {
+    
     return (
       <div>
         {this.props.isAuthenticated ? (

@@ -19,7 +19,7 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   user: { _id: null, score: 0 },
-  score: null
+  name: null
 };
 
 export default function(state = initialState, action) {
@@ -71,7 +71,8 @@ export default function(state = initialState, action) {
         ...state,
         ...action.payload,
         isAuthenticated: true,
-        isLoading: false
+        isLoading: false,
+        name: action.payload.name
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:

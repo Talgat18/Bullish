@@ -9,7 +9,8 @@ import {
   Label,
   Input,
   NavLink,
-  Alert
+  Alert,
+  Spinner
 } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -36,7 +37,7 @@ class Register extends Component {
     if (error !== prevProps.error) {
       // Check for register error
       if (error.id === "REGISTER_FAIL") {
-        this.setState({ msg: error.msg.msg });
+        this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
       }
@@ -77,6 +78,8 @@ class Register extends Component {
   };
 
   render() {
+    const { isLoading } = this.props.auth;
+    const spinner = <Spinner type="grow" color="warning" />;
     return (
       <div>
         <NavLink onClick={this.toggle} href="#">
@@ -84,7 +87,10 @@ class Register extends Component {
         </NavLink>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Register</ModalHeader>
+          <ModalHeader toggle={this.toggle}>
+            Register{"          "}
+            {isLoading ? spinner : " "}
+          </ModalHeader>
           <ModalBody>
             {this.state.msg ? (
               <Alert color="danger">{this.state.msg}</Alert>
@@ -123,7 +129,8 @@ class Register extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.error,
+  auth: state.auth
 });
 
 export default connect(

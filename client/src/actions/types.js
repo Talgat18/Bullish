@@ -15,7 +15,7 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const ADD_SCORE = "ADD_SCORE";
 export const GET_TEXT = "GET_TEXT";
 
-
+export const GETTING_INFO = "GETTING_INFO";
 export const GET_INFO = "GET_INFO";
 export const GET_INFO_FAILED = "GET_INFO_FAILED";
 

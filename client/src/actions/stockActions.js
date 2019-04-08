@@ -3,6 +3,7 @@ import { returnErrors } from "./errorActions";
 import {
 
   GET_INFO,
+  GETTING_INFO,
   GET_INFO_FAILED,
   GET_STOCK_LIST,
   GET_STOCK_LIST_FAILED
@@ -13,8 +14,10 @@ const proxy = "https://cors-anywhere.herokuapp.com/";
 
 
 export const getInfo = () => (dispatch, getState) => {
+
+  dispatch({ type: GETTING_INFO });
     // Headers
-  
+    
     const token = getState().auth.token;
     axios
       .get(`${proxy}https://stockstore.herokuapp.com/api/account/info`, {
@@ -23,7 +26,6 @@ export const getInfo = () => (dispatch, getState) => {
         }
       })
       .then(res => {
-        console.log(res.data);
      
         dispatch({
           type: GET_INFO,

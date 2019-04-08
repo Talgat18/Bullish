@@ -1,5 +1,6 @@
 import {
   GET_INFO,
+  GETTING_INFO,
   GET_INFO_FAILED,
   GET_STOCK_LIST,
   GET_STOCK_LIST_FAILED,
@@ -9,10 +10,11 @@ import {
 import { refreshToken } from "../actions/authActions";
 
 const initialState = {
+  good: false,
   stocks: [],
   loading: false,
   balance: {
-    name: "Bull",
+    name: null,
     stocks: [],
     balance: 0
   }
@@ -20,19 +22,26 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GETTING_INFO:
+      return {
+        ...state,
+        loading: true,
+        good:false
+      };
     case GET_INFO:
       return {
         ...state,
         balance: action.payload,
-        loading: false
+        loading: false,
+        good:true
       };
     case GET_INFO_FAILED:
       refreshToken();
       return {
-        ...state
+        ...state,
+        good:false
       };
     case GET_STOCK_LIST:
-      console.log(action.payload.items);
       return {
         ...state,
         stocks: action.payload.items
@@ -47,7 +56,7 @@ export default function(state = initialState, action) {
         ...state,
         loading: false,
         balance: {
-          name: "Bull",
+          name: null,
           stocks: [],
           balance: 0
         }

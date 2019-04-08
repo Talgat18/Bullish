@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Button } from "reactstrap";
+import { Container, Button, Spinner } from "reactstrap";
 import { connect } from "react-redux";
 import { getItems, deleteItem } from "../actions/itemActions";
 import { getInfo } from "../actions/stockActions";
@@ -26,10 +26,13 @@ class Balance extends Component {
   };
 
   render() {
-    const { balance } = this.props.stock;
+    const { balance, loading } = this.props.stock;
 
     const noAssets = (
       <div>
+        <span className="navbar-text mr-3">
+          <strong> {balance ? ` Your balance ${balance.balance}` : " "}</strong>
+        </span>
         <span className="navbar-text mr-3">
           <strong>You have no stocks</strong>
         </span>
@@ -46,16 +49,21 @@ class Balance extends Component {
         <strong>You have some</strong>
       </span>
     );
+    const spinner = (
+      <Spinner
+        className="spinner"
+        style={{ width: "9rem", height: "9rem" }}
+        color="warning"
+      />
+    );
+
+    const test = loading ? spinner : noAssets;
 
     return (
       <Container style={{ color: "#2f3640" }}>
         <span className="navbar-text mr-3">
-          <strong> {balance ? ` Your balance ${balance.balance}` : " "}</strong>
+          <strong> {balance.stocks.length === 0 ? test : haveSome}</strong>
         </span>
-        <span className="navbar-text mr-3">
-          <strong> {balance.stocks.length === 0 ? noAssets : haveSome}</strong>
-        </span>
-        <Button onClick={this.test}>Test Button</Button> {}
       </Container>
     );
   }
