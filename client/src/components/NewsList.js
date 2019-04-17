@@ -1,15 +1,10 @@
 import React, { Component } from "react";
 import {
   Container,
-  ListGroup,
-  ListGroupItem,
   Button,
-  Spinner,
   Media
 } from "reactstrap";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
-import { getItems, deleteItem } from "../actions/itemActions";
 import { getNews } from "../actions/newsActions";
 import { getInfo, getStockList } from "../actions/stockActions";
 import { refreshToken } from "../actions/authActions";
@@ -17,7 +12,6 @@ import PropTypes from "prop-types";
 
 class News extends Component {
   static propTypes = {
-    getItems: PropTypes.func.isRequired,
     stock: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool
   };
@@ -46,13 +40,7 @@ class News extends Component {
   };
 
   render() {
-    const spinner = (
-      <Spinner
-        className="spinner"
-        style={{ width: "10rem", height: "10rem" }}
-        color="warning"
-      />
-    );
+   
 
     const { articles, randomIndex } = this.props.news;
    
@@ -84,5 +72,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem, getInfo, refreshToken, getStockList, getNews }
+  { getInfo, refreshToken, getStockList, getNews }
 )(News);

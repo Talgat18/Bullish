@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import { Container, Button, Spinner } from "reactstrap";
+import { Container, Spinner, ListGroup, ListGroupItem } from "reactstrap";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
-import { getItems, deleteItem } from "../actions/itemActions";
 import { getInfo } from "../actions/stockActions";
 import { refreshToken } from "../actions/authActions";
 import PropTypes from "prop-types";
 
 class Balance extends Component {
   static propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired,
     isAuthenticated: PropTypes.bool
   };
 
@@ -27,7 +25,6 @@ class Balance extends Component {
 
   render() {
     const { balance, loading } = this.props.stock;
-
     const noAssets = (
       <div>
         <span className="navbar-text mr-3">
@@ -44,11 +41,6 @@ class Balance extends Component {
       </div>
     );
 
-    const haveSome = (
-      <span className="navbar-text mr-3">
-        <strong>You have some</strong>
-      </span>
-    );
     const spinner = (
       <Spinner
         className="spinner"
@@ -57,12 +49,26 @@ class Balance extends Component {
       />
     );
 
+    const list = (
+      <ListGroup className="stock-list">
+        <TransitionGroup className="shopping-list">
+          {balance.stocks.map(({ id, name, price, priceDelta, count }) => (
+            <CSSTransition key={id} timeout={500} classNames="fade">
+              <ListGroupItem>
+                Name - {name} | Amount - {count} | {price}${" "}
+              </ListGroupItem>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </ListGroup>
+    );
+
     const test = loading ? spinner : noAssets;
 
     return (
       <Container style={{ color: "#2f3640" }}>
         <span className="navbar-text mr-3">
-          <strong> {balance.stocks.length === 0 ? test : haveSome}</strong>
+          <strong> {balance.stocks.length === 0 ? test : list}</strong>
         </span>
       </Container>
     );
@@ -79,5 +85,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem, getInfo, refreshToken }
+  { getInfo, refreshToken }
 )(Balance);

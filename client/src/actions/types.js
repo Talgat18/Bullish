@@ -1,6 +1,6 @@
-export const GET_ITEMS = "GET_ITEMS";
-export const ADD_ITEMS = "ADD_ITEMS";
-export const DELETE_ITEM = "DELETE_ITEM";
+
+
+
 export const ITEMS_LOADING = "ITEMS_LOADING";
 export const USER_LOADING = "USER_LOADING";
 export const USER_LOADED = "USER_LOADED";
@@ -33,3 +33,20 @@ export const GET_STOCK_LIST_FAILED = "GET_STOCK_LIST_FAILED";
 export const GETTING_NEWS = "GETTING_NEWS";
 export const GOT_NEWS = "GOT_NEWS";
 export const FAILED_NEWS = "FAILED_NEWS";
+
+export const GETTING_STOCK_HISTORY = "GETTING_STOCK_HISTORY";
+export const GOT_STOCK_HISTORY = "GOT_STOCK_HISTORY";
+export const FAILED_STOCK_HISTORY = "FAILED_STOCK_HISTORY";
+
+
+export const CHART = "CHART";
+
+
+export const BUYING_STOCK = "BUYING_STOCK";
+export const BOUGHT_STOCK = "BOUGHT_STOCK";
+export const BUYING_STOCK_FAILED = "BUYING_STOCK_FAILED";
+
+
+export const SELLING_STOCK = "SELLING_STOCK";
+export const SOLD_STOCK = "SOLD_STOCK";
+export const SELLING_STOCK_FAILED = "BUYING_STOCK_FAILED";

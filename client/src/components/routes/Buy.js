@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import AppNavbar from "../AppNavbar";
-import StockList from "../StockList";
-import { Container } from "reactstrap";
+import Drag from "../drag";
 
 export default class Buy extends Component {
   render() {
     return (
-      <div>
+      <React.Fragment>
         <AppNavbar />
-        <Container>
-          <StockList />
-        </Container>
-      </div>
+        <div>
+          <Drag />
+        </div>
+      </React.Fragment>
     );
   }
 }

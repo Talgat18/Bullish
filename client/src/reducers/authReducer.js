@@ -19,7 +19,7 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   user: { _id: null, score: 0 },
-  name: null
+  name: ""
 };
 
 export default function(state = initialState, action) {

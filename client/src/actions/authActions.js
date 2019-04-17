@@ -9,11 +9,11 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  ADD_SCORE,
   CHECK_TOKEN,
   TOKEN_UP,
   TOKEN_DOWN,
-  REFRESHED_TOKEN
+  REFRESHED_TOKEN,
+  CLEAR_ERRORS
 } from "./types";
 
 const proxy = "https://cors-anywhere.herokuapp.com/";
@@ -61,7 +61,7 @@ export const register = ({ login, password }) => dispatch => {
     .catch(err => {
       dispatch(
         returnErrors(
-          err.response.data.invalidFields[0].message,
+          err.response.data.message,
           err.response.status,
           "REGISTER_FAIL"
         )
@@ -95,19 +95,18 @@ export const login = ({ login, password }) => dispatch => {
       res.data.name = login;
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data,
-        
+        payload: res.data
       });
     })
     .catch(err => {
+      console.log(err.response);
       dispatch(
         returnErrors(
-          err.response.data.invalidFields[0].message,
+          err.response.data.message,
           err.response.status,
           "LOGIN_FAIL"
         )
       );
-      console.log(err.response.status);
       dispatch({ type: LOGIN_FAIL });
     });
 };
@@ -119,28 +118,10 @@ export const logout = () => {
   };
 };
 
-export const addScore = (id, score) => (dispatch, getState) => {
-  // Headers
-
-  // Request body
-  const body = JSON.stringify({ score });
-
-  axios
-    .put(`/api/auth/score/${id}`, body, tokenConfig(getState))
-    .then(res =>
-      dispatch({
-        type: ADD_SCORE,
-        payload: res.data
-      })
-    )
-    .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
-};
-
 // Register User
 export const refreshToken = () => dispatch => {
   // Headers
+
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -151,7 +132,7 @@ export const refreshToken = () => dispatch => {
 
   // Request body
   const body = JSON.stringify({ refreshToken });
-
+  console.log(refreshToken);
   axios
     .post(
       `${proxy}https://stockstore.herokuapp.com/api/auth/refresh`,
@@ -160,6 +141,9 @@ export const refreshToken = () => dispatch => {
     )
     .then(res => {
       console.log(res.data);
+      dispatch({
+        type: CLEAR_ERRORS
+      });
       dispatch({
         type: REFRESHED_TOKEN,
         payload: res.data

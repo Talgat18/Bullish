@@ -16,6 +16,7 @@ import RegisterModal from "./auth/RegisterModal";
 import LoginModal from "./auth/LoginModal";
 import Logout from "./auth/Logout";
 import { getInfo } from "../actions/stockActions";
+import { refreshToken } from "../actions/authActions";
 
 class AppNavbar extends Component {
   state = {
@@ -36,40 +37,30 @@ class AppNavbar extends Component {
   };
 
   render() {
-    const { isAuthenticated, user, name } = this.props.auth;
-    const { balance } = this.props.stock;
-    // check if score === undefined
-    if (user) {
-      if (user.score === undefined) {
-        user.score = 0;
-      }
-    }
+    const { isAuthenticated, name } = this.props.auth;
+    const { balance, loading } = this.props.stock;
 
     const spinner = <Spinner size="sm" type="grow" color="warning" />;
     const authLinks = (
       <Fragment>
         <NavItem>
           <span className="navbar-text mr-3">
-            <strong className='welcoming'>
+            <strong className="welcoming">
               {" "}
-              {name || balance.name
-                ? ` Welcome ${name || balance.name}`
-                : spinner}
+              {loading ? spinner : ` Welcome ${balance.name || name || ""}`}
             </strong>
           </span>
         </NavItem>
+
         <NavItem>
-          <NavLink href="/test">Test DnD</NavLink>{" "}
-        </NavItem>
-        <NavItem>
-          <NavLink href="/news">News</NavLink>{" "}
+          <NavLink href="/news">Новости</NavLink>{" "}
         </NavItem>
 
         <NavItem>
-          <NavLink href="/buy">Let's buy some sh*t</NavLink>{" "}
+          <NavLink href="/buy">Акции</NavLink>{" "}
         </NavItem>
         <NavItem>
-          <NavLink href="/balance">Assets</NavLink>{" "}
+          <NavLink href="/balance">Личный кабинет</NavLink>{" "}
         </NavItem>
 
         <NavItem>
@@ -116,10 +107,11 @@ class AppNavbar extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  stock: state.stock
+  stock: state.stock,
+  error: state.error
 });
 
 export default connect(
   mapStateToProps,
-  { getInfo }
+  { getInfo, refreshToken }
 )(AppNavbar);

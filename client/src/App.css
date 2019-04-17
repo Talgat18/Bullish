@@ -18,7 +18,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   border: 1px solid;
-  border-color: #f1c40f
+  border-color: #f1c40f;
 }
 
 .nav-bar-brend {
@@ -34,8 +34,18 @@
 }
 
 .stock-container {
-  border: 5px solid;
+  border: 3px solid;
   border-color: #f1c40f;
+  border-top: #f1c40f;
+  width: 34em;
+  background: #dcdde1;
+}
+
+.chart-container {
+  border: 3px solid;
+  border-color: #f1c40f;
+  border-top: #f1c40f;
+  background: #dcdde1;
 }
 
 .spinner {
@@ -48,6 +58,10 @@
   margin: auto;
 }
 
+.ballz {
+  background: #f1c40f;
+  text-align: center;
+}
 
 .remove-btn {
   margin-right: 0.5rem;
@@ -83,24 +97,6 @@
   margin: 0.2rem;
 }
 
-#btn-pause {
-  color: #d75a4a;
-  border: 2px solid #d75a4a;
-  background-color: #d75a4a;
-  border-radius: 200px;
-  border-width: 5px;
-  margin-bottom: 5%;
-}
-#seconds {
-  color: #d75a4a;
-}
-
-.bottom-marks {
-  margin-bottom: 10%;
-}
-.container {
-  color: #fff;
-}
 .stock-list {
   margin-top: 5%;
 }

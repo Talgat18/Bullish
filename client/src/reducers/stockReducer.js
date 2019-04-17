@@ -10,11 +10,11 @@ import {
 import { refreshToken } from "../actions/authActions";
 
 const initialState = {
-  good: false,
+  needRefresh: false,
   stocks: [],
   loading: false,
   balance: {
-    name: null,
+    name: '',
     stocks: [],
     balance: 0
   }
@@ -26,20 +26,20 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        good:false
+        
       };
     case GET_INFO:
       return {
         ...state,
         balance: action.payload,
         loading: false,
-        good:true
+        
       };
     case GET_INFO_FAILED:
       refreshToken();
       return {
         ...state,
-        good:false,
+        needRefresh:true,
         loading: false
       };
     case GET_STOCK_LIST:
