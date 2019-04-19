@@ -1,9 +1,7 @@
 import axios from "axios";
 import { returnErrors } from "./errorActions";
 import {
-  USER_LOADED,
   USER_LOADING,
-  AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
@@ -16,38 +14,20 @@ import {
   CLEAR_ERRORS
 } from "./types";
 
-const proxy = "https://cors-anywhere.herokuapp.com/";
-
-// Check token & load user
-export const loadUser = () => (dispatch, getState) => {
-  // User loading
-  dispatch({ type: USER_LOADING });
-
-  axios
-    .get("/api/auth/user", tokenConfig(getState))
-    .then(res => dispatch({ type: USER_LOADED, payload: res.data }))
-    .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({ type: AUTH_ERROR });
-    });
-};
-
-// Register User
 export const register = ({ login, password }) => dispatch => {
   dispatch({ type: USER_LOADING });
-  // Headers
+
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
 
-  // Request body
   const body = JSON.stringify({ login, password });
 
   axios
     .post(
-      `${proxy}https://stockstore.herokuapp.com/api/auth/signup`,
+      `https://stockstore.herokuapp.com/api/auth/signup`,
       body,
       config
     )
@@ -71,22 +51,20 @@ export const register = ({ login, password }) => dispatch => {
     });
 };
 
-// Login User
 export const login = ({ login, password }) => dispatch => {
   dispatch({ type: USER_LOADING });
-  // Headers
+
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
 
-  // Request body
   const body = JSON.stringify({ login, password });
 
   axios
     .post(
-      `${proxy}https://stockstore.herokuapp.com/api/auth/signin`,
+      `https://stockstore.herokuapp.com/api/auth/signin`,
       body,
       config
     )
@@ -111,16 +89,13 @@ export const login = ({ login, password }) => dispatch => {
     });
 };
 
-// Logout User
 export const logout = () => {
   return {
     type: LOGOUT_SUCCESS
   };
 };
 
-// Register User
 export const refreshToken = () => dispatch => {
-  // Headers
 
   const config = {
     headers: {
@@ -130,12 +105,11 @@ export const refreshToken = () => dispatch => {
 
   const refreshToken = localStorage.getItem("refreshToken");
 
-  // Request body
   const body = JSON.stringify({ refreshToken });
   console.log(refreshToken);
   axios
     .post(
-      `${proxy}https://stockstore.herokuapp.com/api/auth/refresh`,
+      `https://stockstore.herokuapp.com/api/auth/refresh`,
       body,
       config
     )

@@ -70,7 +70,7 @@ export default class Drag extends Component {
     return (
       <Container>
         <Row>
-          <Col>
+          <Col md={8}>
             <div id="ball" className="ball stocks" onMouseDown={this.yo}>
               <div
                 id="ballz"
@@ -83,7 +83,7 @@ export default class Drag extends Component {
               <StockList />
             </div>
           </Col>
-          <Col>
+          <Col md={4}>
             {" "}
             <div id="ball" className="ball" onMouseDown={this.yo}>
               <div

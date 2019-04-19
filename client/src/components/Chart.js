@@ -14,9 +14,7 @@ class Chart extends Component {
         legendPosition: "right",
         location: "City"
       },
-
       price: [],
-
       chartData: {
         labels: this.props.chart.date,
         datasets: [
@@ -31,7 +29,6 @@ class Chart extends Component {
   }
 
   componentWillReceiveProps() {
-    this.forceUpdate();
     this.setState({
       chartData: {
         labels: this.props.chart.date,
@@ -47,7 +44,6 @@ class Chart extends Component {
   }
 
   render() {
-    //console.log(this.state.chartData.datasets[0].data);
     return (
       <div className="chart-container" style={{ opacity: this.state.opacity }}>
         <Line

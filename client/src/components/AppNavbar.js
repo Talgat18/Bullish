@@ -22,7 +22,6 @@ class AppNavbar extends Component {
   state = {
     isOpen: false
   };
-  //this.toggle = this.toggle.bind(this); // Если не писать через стрелочную ф-ию
 
   static propTypes = {
     auth: PropTypes.object.isRequired
@@ -52,12 +51,12 @@ class AppNavbar extends Component {
           </span>
         </NavItem>
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="/news">Новости</NavLink>{" "}
-        </NavItem>
+        </NavItem> */}
 
         <NavItem>
-          <NavLink href="/buy">Акции</NavLink>{" "}
+          <NavLink href="/stocks">Акции</NavLink>{" "}
         </NavItem>
         <NavItem>
           <NavLink href="/balance">Личный кабинет</NavLink>{" "}

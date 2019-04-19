@@ -1,20 +1,7 @@
 import React, { Component } from "react";
-import {
-  Container,
-  ListGroup,
-  ListGroupItem,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Input,
-  Row,
-  Col
-} from "reactstrap";
+import _ from "lodash";
+import { Container } from "reactstrap";
 import AtomSpinner from "./spinner/atom-spinner";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
 import { getNews } from "../actions/newsActions";
 import { refreshToken } from "../actions/authActions";
@@ -26,17 +13,25 @@ import {
   sellingStock
 } from "../actions/stockActions";
 
+import Pagination from "./common/pagination";
+import AllStockTable from "./tables/allStockTable";
+import SearchBox from "./common/searchBox";
+
+import { paginate } from "../utils/paginate";
+
 class StockList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
-      buyMod: true,
-      amount: 0,
-      stockId: 0,
-      price: 0
+      pageSize: 4,
+      currentPage: 1,
+      searchQuery: "",
+      sortColumn: {
+        path: "id",
+        order: "asc"
+      }
     };
-
     this.toggle = this.toggle.bind(this);
   }
 
@@ -51,185 +46,80 @@ class StockList extends Component {
     this.props.getInfo();
   }
 
-  onDeleteClick = id => {
-    this.props.deleteItem(id);
-  };
-
   refreshingToken = () => {
     this.props.refreshToken();
   };
 
-  showChart = id => {
+  handleSearch = query => {
+    this.setState({ searchQuery: query, currentPage: 1 });
+  };
+
+  handleChart = id => {
     this.props.getStockHistory(id);
   };
 
-  openMod = (id, price) => {
-    this.setState({ stockId: id, price: price });
-    this.toggle();
+  handlePageChange = page => {
+    this.setState({ currentPage: page });
   };
 
-  buyStock = () => {
-    console.log(
-      "success",
-      this.state.id,
-      "--- ID",
-      this.state.price,
-      "--- PRICE",
-      this.state.amount,
-      "--- AMOUNT"
-    );
-    const { stockId, amount } = this.state;
+  getPaggedData = () => {
+    const { stocks } = this.props.stock;
+    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
-    const buy = {
-      stockId,
-      amount
-    };
+    let filtered = stocks;
+    if (searchQuery)
+      filtered = stocks.filter(m =>
+        m.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
 
-    this.toggle();
-    this.props.buyingStock(buy);
-  };
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
-  sellStock = () => {
-    console.log(
-      "success",
-      this.state.id,
-      "--- ID",
-      this.state.price,
-      "--- PRICE",
-      this.state.amount,
-      "--- AMOUNT"
-    );
-    const { stockId, amount } = this.state;
+    const paginatedStocks = paginate(sorted, currentPage, pageSize);
 
-    const sell = {
-      stockId,
-      amount
-    };
-
-    this.toggle();
-    this.props.sellingStock(sell);
-  };
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  maxAmount = () => {
-    const { balance } = this.props.stock;
-    const max = Math.floor(balance.balance / this.state.price);
-    document.getElementById(this.state.stockId).value = max;
-    console.log(document.getElementById(this.state.stockId).value);
-    this.setState({ amount: max });
+    return { data: paginatedStocks };
   };
 
   render() {
-    const spinner = <AtomSpinner color="#000000" size={50} />;
+    const { balance, loading } = this.props.stock;
+    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { length: count } = this.props.stock.balance.stocks;
 
-    const { stocks, balance, loading } = this.props.stock;
+    const { data } = this.getPaggedData();
 
-    const buyModal = (
-      <div>
-        <Modal
-          isOpen={this.state.modal}
-          toggle={this.toggle}
-          className={this.props.className}
-        >
-          <ModalHeader toggle={this.toggle}>{`Balance - ${
-            balance.balance
-          } | Stock price - ${this.state.price}`}</ModalHeader>
-          <ModalBody>
-            <Form onSubmit={this.onSubmit}>
-              <FormGroup>
-                <Row form>
-                  <Col md={10}>
-                    <FormGroup>
-                      <Input
-                        type="amount"
-                        name="amount"
-                        id={this.state.stockId}
-                        placeholder="Enter amount..."
-                        className="mb-3"
-                        onChange={this.onChange}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={2}>
-                    <FormGroup>
-                      <Button color="link" onClick={this.maxAmount}>
-                        Max
-                      </Button>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row form>
-                  <Col md={8}>
-                    <FormGroup>
-                      <Button
-                        color="success"
-                        style={{ marginTop: "2rem" }}
-                        block
-                        onClick={this.buyStock}
-                      >
-                        Buy
-                      </Button>
-                    </FormGroup>
-                  </Col>
-                  <Col md={4}>
-                    <FormGroup>
-                      <Button
-                        color="danger"
-                        style={{ marginTop: "2rem" }}
-                        block
-                        onClick={this.sellStock}
-                      >
-                        Sell
-                      </Button>
-                    </FormGroup>
-                  </Col>
-                </Row>
-              </FormGroup>
-            </Form>
-          </ModalBody>
-        </Modal>
-      </div>
+    const spinner = (
+      <AtomSpinner className="spinner-center" color="#000000" size={50} />
     );
 
     const stock_list = (
-      <ListGroup className="stock-list">
-        <TransitionGroup className="shopping-list">
-          {stocks.map(({ id, name, price, priceDelta }) => (
-            <CSSTransition key={id} timeout={500} classNames="fade">
-              <ListGroupItem>
-                {name} {price} {priceDelta}{" "}
-                {this.state.buyMod ? buyModal : null}
-                <Button
-                  style={{ marginRight: "0.5rem" }}
-                  outline
-                  color="info"
-                  onClick={this.openMod.bind(this, id, price)}
-                >
-                  Buy/Sell
-                </Button>
-                {this.props.isAuthenticated ? (
-                  <Button
-                    outline
-                    color="info"
-                    onClick={this.showChart.bind(this, id)}
-                  >
-                    График
-                  </Button>
-                ) : null}
-              </ListGroupItem>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-      </ListGroup>
+      <div>
+        <div>
+          <SearchBox value={searchQuery} onChange={this.handleSearch} />
+          <AllStockTable
+            stocks={data}
+            sortColumn={sortColumn}
+            onSort={this.handleSort}
+            onChart={this.handleChart}
+          />
+
+          <Pagination
+            itemsCount={count}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
+        </div>
+        <div />
+      </div>
     );
     return (
       <Container className="stock-container" style={{ color: "black" }}>
-        <Button onClick={this.refreshingToken}>RefreshTokenBTN</Button> {}
         <span className="navbar-text mr-3">
-          <strong> {balance ? `Balance - ${balance.balance}` : " "}</strong>
+          <strong> {balance ? `Ваш баланс: $${balance.balance}` : " "}</strong>
+        </span>
+        <span className="navbar-text mr-3">
+          <a href="/balance" className="badge badge-info">
+            Sell some!
+          </a>
         </span>
         <div style={{ textAlign: "center" }}>
           {" "}

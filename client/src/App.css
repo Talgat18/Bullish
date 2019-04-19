@@ -37,7 +37,7 @@
   border: 3px solid;
   border-color: #f1c40f;
   border-top: #f1c40f;
-  width: 34em;
+  width: 45.6em;
   background: #dcdde1;
 }
 
@@ -56,6 +56,12 @@
   right: 0;
 
   margin: auto;
+}
+
+.spinner-center {
+  position: absolute;
+  left: 50%;
+  top: 25%;
 }
 
 .ballz {
@@ -86,17 +92,16 @@
   transition: opacity 1000ms ease-in;
 }
 
-#h-img1 {
-  margin: 0.2rem;
-}
-#h-img2 {
-  margin: 0.2rem;
-}
-
-#h-img3 {
-  margin: 0.2rem;
-}
-
 .stock-list {
-  margin-top: 5%;
+  margin-top: 2%;
+  border: 1px solid;
+  border-color: #f1c40f;
+}
+
+.form-control {
+  margin-top: 2%;
+}
+
+.clickable {
+  cursor: pointer;
 }

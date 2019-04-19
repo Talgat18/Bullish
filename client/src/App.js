@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Drag from "./components/routes/Drag";
 import Home from "./components/routes/Home";
 import Buy from "./components/routes/Buy";
 import News from "./components/routes/News";
@@ -14,7 +13,7 @@ import { checkToken } from "./actions/authActions";
 import { getInfo } from "./actions/stockActions";
 //loadUser,
 
-
+import "font-awesome/css/font-awesome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -30,8 +29,7 @@ class App extends Component {
         <React.Fragment>
           <div className="App">
             <Switch>
-              <Route path="/drag" component={Drag} />
-              <Route path="/buy" component={Buy} />
+              <Route path="/stocks" component={Buy} />
               <Route path="/news" component={News} />
               <Route path="/home" component={Home} />
               <Route path="/balance" component={Balance} />

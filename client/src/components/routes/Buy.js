@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import AppNavbar from "../AppNavbar";
-import Drag from "../drag";
+import Drag from "../Drag";
 
 export default class Buy extends Component {
   render() {

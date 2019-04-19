@@ -1,30 +1,72 @@
 import React, { Component } from "react";
-import { Container, Spinner, ListGroup, ListGroupItem } from "reactstrap";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import _ from "lodash";
+
+import PropTypes from "prop-types";
+import { Container, Spinner } from "reactstrap";
 import { connect } from "react-redux";
+
 import { getInfo } from "../actions/stockActions";
 import { refreshToken } from "../actions/authActions";
-import PropTypes from "prop-types";
+import { paginate } from "../utils/paginate";
+
+import Pagination from "./common/pagination";
+import StockTable from "./tables/stockTable";
+import SearchBox from "./common/searchBox";
 
 class Balance extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool
+  };
+  state = {
+    pageSize: 4,
+    currentPage: 1,
+    searchQuery: "",
+    sortColumn: {
+      path: "id",
+      order: "asc"
+    }
   };
 
   componentDidMount() {
     this.props.getInfo();
   }
 
-  onDeleteClick = id => {
-    this.props.deleteItem(id);
+  handlePageChange = page => {
+    this.setState({ currentPage: page });
   };
 
-  test = () => {
-    this.props.refreshToken();
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
+
+  handleSearch = query => {
+    this.setState({ searchQuery: query, currentPage: 1 });
+  };
+
+  getPaggedData = () => {
+    const { balance } = this.props.stock;
+    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+
+    let filtered = balance.stocks;
+    if (searchQuery)
+      filtered = balance.stocks.filter(m =>
+        m.name.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+    const stocks = paginate(sorted, currentPage, pageSize);
+
+    return { data: stocks };
   };
 
   render() {
     const { balance, loading } = this.props.stock;
+    const { length: count } = this.props.stock.balance.stocks; // кол-во акций
+    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+
+    const { data } = this.getPaggedData();
+
     const noAssets = (
       <div>
         <span className="navbar-text mr-3">
@@ -41,34 +83,48 @@ class Balance extends Component {
       </div>
     );
 
-    const spinner = (
+    const list = (
+      <div className="row">
+        <span className="navbar-text mr-3">
+          {balance
+            ? ` Ваш баланс:  $${balance.balance} / ₽${balance.balance * 65}`
+            : " "}
+        </span>{" "}
+        <span className="navbar-text mr-3">
+          <a href="/stocks" className="badge badge-info">
+            Buy some!
+          </a>
+        </span>
+        <SearchBox value={searchQuery} onChange={this.handleSearch} />
+        <StockTable
+          stocks={data}
+          sortColumn={sortColumn}
+          onSort={this.handleSort}
+        />
+        <Pagination
+          itemsCount={count}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
+      </div>
+    );
+
+    const loader = loading ? (
       <Spinner
-        className="spinner"
-        style={{ width: "9rem", height: "9rem" }}
+        className="spinner-center"
+        type="grow"
+        style={{ width: "5rem", height: "5rem" }}
         color="warning"
       />
+    ) : (
+      noAssets
     );
-
-    const list = (
-      <ListGroup className="stock-list">
-        <TransitionGroup className="shopping-list">
-          {balance.stocks.map(({ id, name, price, priceDelta, count }) => (
-            <CSSTransition key={id} timeout={500} classNames="fade">
-              <ListGroupItem>
-                Name - {name} | Amount - {count} | {price}${" "}
-              </ListGroupItem>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
-      </ListGroup>
-    );
-
-    const test = loading ? spinner : noAssets;
 
     return (
       <Container style={{ color: "#2f3640" }}>
-        <span className="navbar-text mr-3">
-          <strong> {balance.stocks.length === 0 ? test : list}</strong>
+        <span>
+          <strong> {balance.stocks.length === 0 ? loader : list}</strong>
         </span>
       </Container>
     );
@@ -78,7 +134,6 @@ class Balance extends Component {
 const mapStateToProps = state => ({
   item: state.item,
   isAuthenticated: state.auth.isAuthenticated,
-  score: state.auth.score,
   ID: state.auth.user,
   stock: state.stock
 });
