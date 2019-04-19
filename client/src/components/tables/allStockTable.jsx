@@ -11,6 +11,7 @@ class StockTable extends Component {
     { path: "price", label: "Price" },
     { path: "count", label: "Count" },
     {
+      path: "priceDelta",
       label: "PriceDelta",
       key: "prize",
       content: stock => <PriceDelta priceDelta={stock.priceDelta} />

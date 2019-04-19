@@ -18,7 +18,7 @@ class Balance extends Component {
     isAuthenticated: PropTypes.bool
   };
   state = {
-    pageSize: 4,
+    pageSize: 1,
     currentPage: 1,
     searchQuery: "",
     sortColumn: {

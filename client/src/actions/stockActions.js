@@ -48,6 +48,7 @@ export const getStockList = () => (dispatch, getState) => {
       }
     })
     .then(res => {
+      console.log(res);
       dispatch({
         type: GET_STOCK_LIST,
         payload: res.data

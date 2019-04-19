@@ -24,7 +24,7 @@ class StockList extends Component {
     super(props);
     this.state = {
       modal: false,
-      pageSize: 4,
+      pageSize: 5,
       currentPage: 1,
       searchQuery: "",
       sortColumn: {
@@ -58,6 +58,10 @@ class StockList extends Component {
     this.props.getStockHistory(id);
   };
 
+  handleSort = sortColumn => {
+    this.setState({ sortColumn });
+  };
+
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
@@ -80,9 +84,8 @@ class StockList extends Component {
   };
 
   render() {
-    const { balance, loading } = this.props.stock;
+    const { balance, loading, stocks } = this.props.stock;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-    const { length: count } = this.props.stock.balance.stocks;
 
     const { data } = this.getPaggedData();
 
@@ -102,7 +105,7 @@ class StockList extends Component {
           />
 
           <Pagination
-            itemsCount={count}
+            itemsCount={stocks.length}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
