@@ -11,7 +11,8 @@ import {
   CHECK_TOKEN,
   TOKEN_UP,
   TOKEN_DOWN,
-  REFRESHED_TOKEN
+  REFRESHED_TOKEN,
+  GOT_TRANS_HISTORY
 } from "../actions/types";
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
   isAuthenticated: null,
   isLoading: false,
   user: { _id: null, score: 0 },
-  name: ""
+  name: "",
+  items: null
 };
 
 export default function(state = initialState, action) {
@@ -28,6 +30,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isLoading: true
+      };
+    case GOT_TRANS_HISTORY:
+      return {
+        ...state,
+        items: action.payload.data.items
       };
     case TOKEN_UP:
       return {

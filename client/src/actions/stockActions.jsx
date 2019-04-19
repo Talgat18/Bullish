@@ -65,7 +65,7 @@ export const getStockHistory = id => (dispatch, getState) => {
   const token = getState().auth.token;
   axios
     .get(
-      `https://stocks-mocks.herokuapp.com/api/stocks/${id}/history?range=${"month"}`,
+      `https://stockstore.herokuapp.com/api/stocks/${id}/history`,
       {
         headers: {
           Authorization: token
@@ -81,8 +81,9 @@ export const getStockHistory = id => (dispatch, getState) => {
       data.map(obj => date.push(obj.date));
 
       res.data.price = price;
+      date = date.map(item => item.slice(0,2))
+      console.log(date)
       res.data.date = date;
-
       dispatch({
         type: GOT_STOCK_HISTORY,
         payload: res.data

@@ -7,12 +7,13 @@ export const getChart = () => (dispatch, getState) => {
 
   const token = getState().auth.token;
   axios
-    .get(`https://stockstore.herokuapp.com/api/account/info`, {
+    .get(`https://stockstore.herokuapp.com/api/stocks/1/history`, {
       headers: {
         Authorization: token
       }
     })
     .then(res => {
+      console.log(res.data);
       dispatch({
         type: GET_INFO,
         payload: res.data
