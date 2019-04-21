@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import _ from "lodash";
-import { Container } from "reactstrap";
 import AtomSpinner from "./spinner/atom-spinner";
+import { Container } from "reactstrap";
 import { connect } from "react-redux";
 import { getNews } from "../actions/newsActions";
 import { refreshToken } from "../actions/authActions";
@@ -12,12 +11,10 @@ import {
   buyingStock,
   sellingStock
 } from "../actions/stockActions";
-
+import { getPaggedData } from "../utils/getPaggedData";
 import Pagination from "./common/pagination";
 import AllStockTable from "./tables/allStockTable";
 import SearchBox from "./common/searchBox";
-
-import { paginate } from "../utils/paginate";
 
 class StockList extends Component {
   constructor(props) {
@@ -30,7 +27,8 @@ class StockList extends Component {
       sortColumn: {
         path: "id",
         order: "asc"
-      }
+      },
+      stockz: this.props.stock.stockz
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -41,7 +39,7 @@ class StockList extends Component {
     }));
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getStockList();
     this.props.getInfo();
   }
@@ -66,28 +64,17 @@ class StockList extends Component {
     this.setState({ currentPage: page });
   };
 
-  getPaggedData = () => {
-    const { stocks } = this.props.stock;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-
-    let filtered = stocks;
-    if (searchQuery)
-      filtered = stocks.filter(m =>
-        m.name.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const paginatedStocks = paginate(sorted, currentPage, pageSize);
-
-    return { data: paginatedStocks };
-  };
-
   render() {
     const { balance, loading, stocks } = this.props.stock;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
-    const { data } = this.getPaggedData();
+    const { data } = getPaggedData(
+      stocks,
+      pageSize,
+      currentPage,
+      sortColumn,
+      searchQuery
+    );
 
     const spinner = (
       <AtomSpinner className="spinner-center" color="#000000" size={50} />

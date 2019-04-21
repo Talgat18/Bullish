@@ -20,7 +20,7 @@ class Buy extends Component {
     super(props);
     this.state = {
       modal: false,
-      amount: "0"
+      amount: "1"
     };
 
     this.toggle = this.toggle.bind(this);
@@ -52,6 +52,7 @@ class Buy extends Component {
     };
     this.toggle();
     this.props.buyingStock(buy);
+    this.props.getInfo();
   };
 
   render() {

@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import _ from "lodash";
 
 import PropTypes from "prop-types";
 import { Container, Spinner } from "reactstrap";
 import { connect } from "react-redux";
 
-import { getInfo } from "../actions/stockActions";
+import { getInfo, sellingStock } from "../actions/stockActions";
 import { refreshToken } from "../actions/authActions";
 import { getHistory } from "../actions/historyActions";
 
-import { paginate } from "../utils/paginate";
+import { getPaggedData } from "../utils/getPaggedData";
+import { getPaggedHistoryData } from "../utils/getPaggedHistoryData";
 
 import Pagination from "./common/pagination";
 import StockTable from "./tables/stockTable";
@@ -21,25 +21,40 @@ class Balance extends Component {
     isAuthenticated: PropTypes.bool
   };
   state = {
-    pageSize: 3,
+    pageSize: 4,
     currentPage: 1,
     searchQuery: "",
     sortColumn: {
       path: "id",
       order: "asc"
     },
-    pageSizeHistory: 3,
+    pageSizeHistory: 2,
     currentPageHistory: 1,
+    searchQueryHistory: "",
     sortColumnHistory: {
       path: "transactionId",
       order: "asc"
-    }
+    },
+    myStocks: [],
+    stockLength: this.props.stock.balance.stocks
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getInfo();
     this.props.getHistory();
   }
+
+  componentWillReceiveProps() {
+    this.setState({ myStocks: this.props.stock.balance.stocks });
+  }
+
+  handleSell = (amount, stockId) => {
+    const sell = {
+      stockId,
+      amount
+    };
+    this.props.sellingStock(sell);
+  };
 
   handlePageChange = page => {
     this.setState({ currentPage: page });
@@ -53,50 +68,27 @@ class Balance extends Component {
     this.setState({ sortColumn });
   };
 
+  handleSortHistory = sortColumnHistory => {
+    this.setState({ sortColumnHistory });
+  };
+
   handleSearch = query => {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
 
-  getPaggedDataStocks = items => {
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-
-    let filtered = items;
-    if (searchQuery)
-      filtered = items.filter(m =>
-        m.name.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-
-    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-    const data = paginate(sorted, currentPage, pageSize);
-
-    return { data: data };
+  handleSearchHistory = query => {
+    this.setState({ searchQueryHistory: query, currentPageHistory: 1 });
   };
 
-  getPaggedDataHistory = items => {
-    const {
-      pageSizeHistory,
-      currentPageHistory,
-      sortColumnHistory
-    } = this.state;
-
-    let filtered = items;
-
-    const sorted = _.orderBy(
-      filtered,
-      [sortColumnHistory.path],
-      [sortColumnHistory.order]
-    );
-
-    const data = paginate(sorted, currentPageHistory, pageSizeHistory);
-
-    return { history: data };
+  handleUpdate = (amount, stockId) => { // доделать amount
+    const myStocks = this.state.myStocks.filter(m => m.id !== stockId);
+    this.setState({ myStocks });
   };
 
   render() {
     const { balance, loading } = this.props.stock;
-    const { items } = this.props.history;
-    const { length: count } = this.props.stock.balance.stocks; // кол-во акций
+    const { items } = this.props.history.items;
+    const { length: count } = this.props.stock.balance.stocks;
     const {
       pageSize,
       currentPage,
@@ -104,32 +96,30 @@ class Balance extends Component {
       searchQuery,
       pageSizeHistory,
       currentPageHistory,
-      sortColumnHistory
+      sortColumnHistory,
+      searchQueryHistory
     } = this.state;
 
-    const historyItems = items[0] ? items[0].items : "";
-    const countHistory = items[0] ? +items[0].items.length : "";
+    const historyItems = items;
+    const countHistory = items ? items.length : "";
 
-    const { data } = this.getPaggedDataStocks(balance.stocks);
-    const {history} = this.getPaggedDataHistory(historyItems);
-
-    const noAssets = (
-      <div>
-        <span className="navbar-text mr-3">
-          <strong> {balance ? ` Your balance ${balance.balance}` : " "}</strong>
-        </span>
-        <span className="navbar-text mr-3">
-          <strong>You have no stocks</strong>
-        </span>
-        <span className="navbar-text mr-3">
-          <a href="/buy" className="badge badge-info">
-            Buy some!
-          </a>
-        </span>
-      </div>
+    const { history } = getPaggedHistoryData(
+      historyItems,
+      pageSizeHistory,
+      currentPageHistory,
+      sortColumnHistory,
+      searchQueryHistory
     );
 
-    const list = (
+    const { data } = getPaggedData(
+      this.state.myStocks,
+      pageSize,
+      currentPage,
+      sortColumn,
+      searchQuery
+    );
+
+    const myStockList = (
       <div className="row">
         <span className="navbar-text mr-3">
           {balance
@@ -146,6 +136,8 @@ class Balance extends Component {
           stocks={data}
           sortColumn={sortColumn}
           onSort={this.handleSort}
+          onSell={this.handleSell}
+          onUpdate={this.handleUpdate}
         />
         <Pagination
           itemsCount={count}
@@ -153,13 +145,20 @@ class Balance extends Component {
           currentPage={currentPage}
           onPageChange={this.handlePageChange}
         />{" "}
-        <div>
-          <strong className="navbar-text mt-5">{`История транзакций`}</strong>{" "}
-        </div>
+      </div>
+    );
+
+    const historyList = (
+      <div>
+        <strong className="navbar-text mt-5">{`История транзакций`}</strong>{" "}
+        <SearchBox
+          value={searchQueryHistory}
+          onChange={this.handleSearchHistory}
+        />
         <HistoryTable
           items={history}
           sortColumn={sortColumnHistory}
-          onSort={this.handleSort}
+          onSort={this.handleSortHistory}
         />
         <Pagination
           itemsCount={countHistory}
@@ -170,22 +169,33 @@ class Balance extends Component {
       </div>
     );
 
-    const loader = loading ? (
+    const loader = (
       <Spinner
         className="spinner-center"
         type="grow"
         style={{ width: "5rem", height: "5rem" }}
         color="warning"
       />
-    ) : (
-      noAssets
     );
 
+    const noStocks = (
+      <div>
+        <span className="navbar-text mr-3">You have no stocks!</span>
+        <span className="navbar-text mr-3">
+          <a href="/stocks" className="badge badge-info">
+            Buy some!
+          </a>
+        </span>
+      </div>
+    );
     return (
       <Container style={{ color: "#2f3640" }}>
-        <span>
-          <strong> {balance.stocks.length === 0 ? loader : list}</strong>
-        </span>
+        {loading
+          ? loader
+          : balance.stocks.length === 0
+          ? noStocks
+          : myStockList}
+        {historyList}
       </Container>
     );
   }
@@ -201,5 +211,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getInfo, refreshToken, getHistory }
+  { getInfo, refreshToken, getHistory, sellingStock }
 )(Balance);

@@ -20,7 +20,7 @@ class Sell extends Component {
     super(props);
     this.state = {
       modal: false,
-      amount: "0",
+      amount: "1",
       count: 0
     };
 
@@ -46,12 +46,10 @@ class Sell extends Component {
     const { amount } = this.state;
     const { stockId } = this.props;
 
-    const sell = {
-      stockId,
-      amount
-    };
     this.toggle();
-    this.props.sellingStock(sell);
+    this.props.onSell(amount, stockId);
+    this.props.onUpdate(amount, stockId)
+    
   };
 
   render() {

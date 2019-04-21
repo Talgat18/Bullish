@@ -18,7 +18,7 @@ class StockTable extends Component {
     {
       key: "sellModal",
       content: stock => (
-        <Sell stockId={stock.id} price={stock.price} count={stock.count} />
+        <Sell stockId={stock.id} price={stock.price} count={stock.count} onSell={this.props.onSell} onUpdate={this.props.onUpdate}/>
       )
     }
   ];

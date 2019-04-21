@@ -13,12 +13,14 @@ export const getHistory = () => (dispatch, getState) => {
       }
     })
     .then(res => {
+      console.log(res.data)
       dispatch({
         type: GOT_TRANS_HISTORY,
         payload: res
       });
     })
     .catch(err => {
+      console.log(err)
       dispatch({ type: FAILED_TRANS_HISTORY });
     });
 };
