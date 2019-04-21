@@ -13,7 +13,6 @@ class HistoryTable extends Component {
 
   render() {
     const { items, sortColumn, onSort } = this.props;
-
     return (
       <InitTable
         columns={this.columns}
