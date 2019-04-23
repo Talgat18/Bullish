@@ -13,11 +13,9 @@ import {
   Spinner
 } from "reactstrap";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { register } from "../../actions/authActions";
-import { clearErrors } from "../../actions/errorActions";
+import { loginStart } from "../../../actions/authActions";
 
-class Register extends Component {
+class LoginModal extends Component {
   state = {
     modal: false,
     login: "",
@@ -25,18 +23,12 @@ class Register extends Component {
     msg: null
   };
 
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    register: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
-  };
 
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
       // Check for register error
-      if (error.id === "REGISTER_FAIL") {
+      if (error.id === "LOGIN_FAIL") {
         this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
@@ -52,7 +44,7 @@ class Register extends Component {
 
   toggle = () => {
     // Clear errors
-    this.props.clearErrors();
+    //this.props.clearErrors();
     this.setState({
       modal: !this.state.modal
     });
@@ -64,17 +56,19 @@ class Register extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    
 
-    const { name, login, password } = this.state;
+    const { login, password } = this.state;
 
-    // Create user object
-    const newUser = {
-      name,
+    const user = {
       login,
       password
     };
-    // Attempt to register
-    this.props.register(newUser);
+    // Attempt to login
+
+    this.props.dispatch(loginStart(user));
+    console.log(user)
+    this.toggle();
   };
 
   render() {
@@ -83,12 +77,12 @@ class Register extends Component {
     return (
       <div>
         <NavLink onClick={this.toggle} href="#">
-          Register
+          Login
         </NavLink>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
-            Register{"          "}
+            Login {"          "}
             {isLoading ? spinner : " "}
           </ModalHeader>
           <ModalBody>
@@ -98,6 +92,7 @@ class Register extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="item">Login</Label>
+
                 <Input
                   type="login"
                   name="login"
@@ -115,8 +110,13 @@ class Register extends Component {
                   className="mb-3"
                   onChange={this.onChange} // use in typeracer
                 />
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  Register
+                <Button
+                  disabled={isLoading}
+                  color="dark"
+                  style={{ marginTop: "2rem" }}
+                  block
+                >
+                  Login
                 </Button>
               </FormGroup>
             </Form>
@@ -135,5 +135,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { register, clearErrors }
-)(Register);
+  null
+)(LoginModal);

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Chart from "./Chart";
-import StockList from "./StockList";
+import Chart from "../chart/Chart";
+import StockList from "../stockList/StockList";
 import { Container, Row, Col } from "reactstrap";
 
 export default class Drag extends Component {
-  yo = e => {
+  drag = e => {
     var ball = document.getElementById("ball");
     var ballz = document.getElementById("ballz");
 
@@ -17,7 +17,7 @@ export default class Drag extends Component {
       document.body.appendChild(ball);
       moveAt(e);
 
-      ball.style.zIndex = 1000; // над другими элементами
+      ball.style.zIndex = 1000;
 
       function moveAt(e) {
         ball.style.left = e.pageX - shiftX + "px";
@@ -71,7 +71,7 @@ export default class Drag extends Component {
       <Container>
         <Row>
           <Col md={7}>
-            <div id="ball" className="ball stocks" onMouseDown={this.yo}>
+            <div id="ball" className="ball stocks" onMouseDown={this.drag}>
               <div
                 id="ballz"
                 className="ballz"
@@ -85,7 +85,7 @@ export default class Drag extends Component {
           </Col>
           <Col md={5}>
             {" "}
-            <div id="ball" className="ball" onMouseDown={this.yo}>
+            <div id="ball" className="ball" onMouseDown={this.drag}>
               <div
                 id="ballz"
                 className="ballz"

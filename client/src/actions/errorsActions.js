@@ -1,8 +1,7 @@
-import { GET_ERRORS, CLEAR_ERRORS } from "./types";
+import { GET_ERRORS, CLEAR_ERRORS } from "../constants/types";
 
 // RETURN ERRORS
 export const returnErrors = (msg, status, id) => {
-  console.log(msg, status, id);
   return {
     type: GET_ERRORS,
     payload: { msg, status, id }

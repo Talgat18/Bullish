@@ -11,9 +11,6 @@ import {
   Input
 } from "reactstrap";
 import { connect } from "react-redux";
-import { login } from "../../../actions/authActions";
-import { getInfo, buyingStock } from "../../../actions/stockActions";
-import { clearErrors } from "../../../actions/errorActions";
 
 class Buy extends Component {
   constructor(props) {
@@ -46,13 +43,8 @@ class Buy extends Component {
   buyStock = () => {
     const { amount } = this.state;
     const { stockId } = this.props;
-    const buy = {
-      stockId,
-      amount
-    };
     this.toggle();
-    this.props.buyingStock(buy);
-    this.props.getInfo();
+    this.props.onBuy(amount, stockId);
   };
 
   render() {
@@ -88,7 +80,11 @@ class Buy extends Component {
                   </Col>
                   <Col md={2}>
                     <FormGroup>
-                      <Button style={{marginTop: "0.3rem"}} color="link" onClick={this.maxAmount}>
+                      <Button
+                        style={{ marginTop: "0.3rem" }}
+                        color="link"
+                        onClick={this.maxAmount}
+                      >
                         Max
                       </Button>
                     </FormGroup>
@@ -124,7 +120,4 @@ const mapStateToProps = state => ({
   stock: state.stock
 });
 
-export default connect(
-  mapStateToProps,
-  { login, clearErrors, getInfo, buyingStock }
-)(Buy);
+export default connect(mapStateToProps)(Buy);

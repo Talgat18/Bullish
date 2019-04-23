@@ -1,27 +1,27 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { Container, Spinner } from "reactstrap";
 import { connect } from "react-redux";
 
-import { getInfo, sellingStock } from "../actions/stockActions";
-import { refreshToken } from "../actions/authActions";
-import { getHistory } from "../actions/historyActions";
+import { getPaggedData } from "../../utils/getPaggedData";
+import { getPaggedHistoryData } from "../../utils/getPaggedHistoryData";
 
-import { getPaggedData } from "../utils/getPaggedData";
-import { getPaggedHistoryData } from "../utils/getPaggedHistoryData";
+import Pagination from "../common/pagination";
+import StockTable from "../tables/stockTable";
+import HistoryTable from "../tables/historyTable";
+import SearchBox from "../common/searchBox";
 
-import Pagination from "./common/pagination";
-import StockTable from "./tables/stockTable";
-import HistoryTable from "./tables/historyTable";
-import SearchBox from "./common/searchBox";
+import { getInfoStart, sellingStock } from "../../actions/stockActions";
+import { getTransHistory } from "../../actions/historyActions";
 
 class Balance extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool
   };
   state = {
-    pageSize: 4,
+    pageSize: 3,
     currentPage: 1,
     searchQuery: "",
     sortColumn: {
@@ -35,26 +35,17 @@ class Balance extends Component {
       path: "transactionId",
       order: "asc"
     },
-    myStocks: [],
-    stockLength: this.props.stock.balance.stocks
+    myStocks: []
   };
 
   componentWillMount() {
-    this.props.getInfo();
-    this.props.getHistory();
+    this.props.dispatch(getInfoStart());
+    this.props.dispatch(getTransHistory());
   }
 
   componentWillReceiveProps() {
     this.setState({ myStocks: this.props.stock.balance.stocks });
   }
-
-  handleSell = (amount, stockId) => {
-    const sell = {
-      stockId,
-      amount
-    };
-    this.props.sellingStock(sell);
-  };
 
   handlePageChange = page => {
     this.setState({ currentPage: page });
@@ -80,15 +71,25 @@ class Balance extends Component {
     this.setState({ searchQueryHistory: query, currentPageHistory: 1 });
   };
 
-  handleUpdate = (amount, stockId) => { // доделать amount
+  handleUpdate = (amount, stockId) => {
+    // доделать amount
     const myStocks = this.state.myStocks.filter(m => m.id !== stockId);
     this.setState({ myStocks });
   };
 
+  handleSell = (amount, stockId) => {
+    const data = {
+      stockId,
+      amount
+    };
+    this.props.dispatch(sellingStock(data));
+  };
+
   render() {
     const { balance, loading } = this.props.stock;
-    const { items } = this.props.history.items;
-    const { length: count } = this.props.stock.balance.stocks;
+    const { items } = this.props.history;
+    const count = balance.stocks.length;
+
     const {
       pageSize,
       currentPage,
@@ -127,9 +128,9 @@ class Balance extends Component {
             : " "}
         </span>{" "}
         <span className="navbar-text mr-3">
-          <a href="/stocks" className="badge badge-info">
+          <Link className="badge badge-info" to="/stocks">
             Buy some!
-          </a>
+          </Link>
         </span>
         <SearchBox value={searchQuery} onChange={this.handleSearch} />
         <StockTable
@@ -190,11 +191,7 @@ class Balance extends Component {
     );
     return (
       <Container style={{ color: "#2f3640" }}>
-        {loading
-          ? loader
-          : balance.stocks.length === 0
-          ? noStocks
-          : myStockList}
+        {loading ? loader : count === 0 ? noStocks : myStockList}
         {historyList}
       </Container>
     );
@@ -204,12 +201,8 @@ class Balance extends Component {
 const mapStateToProps = state => ({
   item: state.item,
   isAuthenticated: state.auth.isAuthenticated,
-  ID: state.auth.user,
   stock: state.stock,
   history: state.history
 });
 
-export default connect(
-  mapStateToProps,
-  { getInfo, refreshToken, getHistory, sellingStock }
-)(Balance);
+export default connect(mapStateToProps)(Balance);

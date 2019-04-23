@@ -1,20 +1,15 @@
 import {
-  GET_INFO,
-  GETTING_INFO,
-  GET_INFO_FAILED,
+  GETINFO_START,
+  GETINFO_FETCH_SUCCEEDED,
   GET_STOCK_LIST,
-  GET_STOCK_LIST_FAILED,
-  LOGOUT_SUCCESS
-} from "../actions/types";
-
-import { refreshToken } from "../actions/authActions";
+  GET_STOCK_LIST_SUCCEED
+} from "../constants/types";
 
 const initialState = {
-  needRefresh: false,
   stocks: [],
   loading: false,
   balance: {
-    name: '',
+    name: "",
     stocks: [],
     balance: 0
   }
@@ -22,45 +17,31 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GETTING_INFO:
-      return {
-        ...state,
-        loading: true,
-        
-      };
-    case GET_INFO:
+    case GETINFO_START:
+      return { ...state, loading: true };
+    case GETINFO_FETCH_SUCCEEDED:
+      console.log(action.payload);
       return {
         ...state,
         balance: action.payload,
-        loading: false,
-        
-      };
-    case GET_INFO_FAILED:
-      refreshToken();
-      return {
-        ...state,
-        needRefresh:true,
         loading: false
+      };
+    case "GET_INFO_FAILED":
+      console.log(action.payload);
+      return {
+        ...state
       };
     case GET_STOCK_LIST:
       return {
         ...state,
-        stocks: action.payload.items
+        loading: true
       };
-    case GET_STOCK_LIST_FAILED:
-      refreshToken();
-      return {
-        ...state
-      };
-    case LOGOUT_SUCCESS:
+    case GET_STOCK_LIST_SUCCEED:
+      console.log(action.payload);
       return {
         ...state,
-        loading: false,
-        balance: {
-          name: null,
-          stocks: [],
-          balance: 0
-        }
+        stocks: action.payload.items,
+        loading: false
       };
     default:
       return state;

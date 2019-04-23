@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import AtomSpinner from "./spinner/atom-spinner";
+import { Link } from "react-router-dom";
+import AtomSpinner from ".././spinner/atom-spinner";
 import { Container } from "reactstrap";
 import { connect } from "react-redux";
-import { getNews } from "../actions/newsActions";
-import { refreshToken } from "../actions/authActions";
 import {
-  getInfo,
+  getInfoStart,
   getStockList,
-  getStockHistory,
-  buyingStock,
-  sellingStock
-} from "../actions/stockActions";
-import { getPaggedData } from "../utils/getPaggedData";
-import Pagination from "./common/pagination";
-import AllStockTable from "./tables/allStockTable";
-import SearchBox from "./common/searchBox";
+  buyingStock
+} from "../../actions/stockActions";
+import { getStockHistory } from "../../actions/chartActions";
+import { getPaggedData } from "../../utils/getPaggedData";
+import Pagination from "../common/pagination";
+import AllStockTable from "../tables/allStockTable";
+import SearchBox from "../common/searchBox";
 
 class StockList extends Component {
   constructor(props) {
@@ -40,8 +38,8 @@ class StockList extends Component {
   }
 
   componentWillMount() {
-    this.props.getStockList();
-    this.props.getInfo();
+    this.props.dispatch(getStockList());
+    this.props.dispatch(getInfoStart());
   }
 
   refreshingToken = () => {
@@ -52,8 +50,17 @@ class StockList extends Component {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
 
+  handleBuy = (amount, stockId) => {
+    const data = {
+      stockId,
+      amount
+    };
+    this.props.dispatch(buyingStock(data));
+  };
+
   handleChart = id => {
-    this.props.getStockHistory(id);
+    console.log(id);
+    this.props.dispatch(getStockHistory(id));
   };
 
   handleSort = sortColumn => {
@@ -89,6 +96,7 @@ class StockList extends Component {
             sortColumn={sortColumn}
             onSort={this.handleSort}
             onChart={this.handleChart}
+            onBuy={this.handleBuy}
           />
 
           <Pagination
@@ -107,9 +115,9 @@ class StockList extends Component {
           <strong> {balance ? `Ваш баланс: $${balance.balance}` : " "}</strong>
         </span>
         <span className="navbar-text mr-3">
-          <a href="/balance" className="badge badge-info">
+          <Link className="badge badge-info" to="/balance">
             Sell some!
-          </a>
+          </Link>
         </span>
         <div style={{ textAlign: "center" }}>
           {" "}
@@ -127,15 +135,4 @@ const mapStateToProps = state => ({
   ID: state.auth.user
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    getInfo,
-    refreshToken,
-    getStockList,
-    getStockHistory,
-    getNews,
-    buyingStock,
-    sellingStock
-  }
-)(StockList);
+export default connect(mapStateToProps)(StockList);

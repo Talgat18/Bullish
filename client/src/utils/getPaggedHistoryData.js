@@ -10,18 +10,14 @@ export function getPaggedHistoryData(
   searchQuery
 ) {
   let filtered = items;
-    if (searchQuery)
-      filtered = items.filter(m =>
-        m.stock.code.toLowerCase().startsWith(searchQuery.toLowerCase())
-      );
-
-    const sorted = _.orderBy(
-      filtered,
-      [sortColumn.path],
-      [sortColumn.order]
+  if (searchQuery)
+    filtered = items.filter(m =>
+      m.stock.code.toLowerCase().startsWith(searchQuery.toLowerCase())
     );
 
-    const data = paginate(sorted, currentPage, pageSize);
+  const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
-    return { history: data };
+  const data = paginate(sorted, currentPage, pageSize);
+
+  return { history: data };
 }

@@ -3,32 +3,34 @@ import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   Container,
-  NavLink,
   Spinner
 } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import RegisterModal from "./auth/RegisterModal";
 import LoginModal from "./auth/LoginModal";
+import RegisterModal from "./auth/RegisterModal";
 import Logout from "./auth/Logout";
-import { getInfo } from "../actions/stockActions";
-import { refreshToken } from "../actions/authActions";
+import { getInfoStart, getStockList } from "../../actions/stockActions";
+import { getTransHistory } from "../../actions/historyActions";
+import { NavLink, Link } from "react-router-dom";
 
 class AppNavbar extends Component {
   state = {
-    isOpen: false
+    isOpen: false,
+    accessToken: this.props.auth.token
   };
 
   static propTypes = {
     auth: PropTypes.object.isRequired
   };
 
-  componentDidMount() {
-    this.props.getInfo();
+  componentWillMount() {
+    this.props.dispatch(getInfoStart());
+    this.props.dispatch(getTransHistory());
+    this.props.dispatch(getStockList());
   }
 
   toggle = () => {
@@ -50,21 +52,18 @@ class AppNavbar extends Component {
             </strong>
           </span>
         </NavItem>
-
-        {/* <NavItem>
-          <NavLink href="/news">Новости</NavLink>{" "}
-        </NavItem> */}
-
         <NavItem>
-          <NavLink href="/stocks">Акции</NavLink>{" "}
+          <NavLink className="nav-item nav-link" to="/stocks">
+            Акции
+          </NavLink>{" "}
         </NavItem>
         <NavItem>
-          <NavLink href="/balance">Личный кабинет</NavLink>{" "}
+          <NavLink className="nav-item nav-link" to="/balance">
+            Личный кабинет
+          </NavLink>{" "}
         </NavItem>
-
-        <NavItem>
-          <Logout />
-        </NavItem>
+        <Logout />
+        <NavItem />
       </Fragment>
     );
 
@@ -88,9 +87,9 @@ class AppNavbar extends Component {
           className="mb-5"
         >
           <Container>
-            <NavbarBrand className="nav-bar-brend" href="/">
+            <Link className="navbar-brand" to="/">
               Taktasimoff / Bullish
-            </NavbarBrand>
+            </Link>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
@@ -110,7 +109,4 @@ const mapStateToProps = state => ({
   error: state.error
 });
 
-export default connect(
-  mapStateToProps,
-  { getInfo, refreshToken }
-)(AppNavbar);
+export default connect(mapStateToProps)(AppNavbar);

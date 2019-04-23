@@ -1,30 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Line } from "react-chartjs-2";
-import { getStockHistory } from "../actions/stockActions";
+//import { getStockHistory } from "../actions/stockActions";
 
 class Chart extends Component {
   constructor(props) {
     super(props);
     this.state = {
       opacity: 1,
-      anyData: {
-        displayTitle: true,
-        displayLegend: true,
-        legendPosition: "right",
-        location: "City"
-      },
-      price: [],
-      chartData: {
-        labels: this.props.chart.date,
-        datasets: [
-          {
-            label: "USD",
-            data: this.props.chart.data,
-            backgroundColor: ["#689F38"]
-          }
-        ]
-      }
+        anyData: {
+          displayTitle: true,
+          displayLegend: true,
+          legendPosition: "right",
+          location: "City"
+        },
+        price: [],
+        chartData: {
+          labels: this.props.chart.date,
+          datasets: [
+            {
+              label: "USD",
+              data: this.props.chart.data,
+              backgroundColor: ["#689F38"]
+            }
+          ]
+        }
     };
   }
 
@@ -71,7 +71,4 @@ const mapStateToProps = state => ({
   chart: state.chart
 });
 
-export default connect(
-  mapStateToProps,
-  { getStockHistory }
-)(Chart);
+export default connect(mapStateToProps)(Chart);

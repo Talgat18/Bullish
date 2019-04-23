@@ -1,4 +1,4 @@
-import { GOT_STOCK_HISTORY } from "../actions/types";
+import { GOT_STOCK_HISTORY } from "../constants/types";
 
 const initialState = {
   opacity: 0,

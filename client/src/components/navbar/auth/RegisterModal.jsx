@@ -13,12 +13,10 @@ import {
   Spinner
 } from "reactstrap";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { login } from "../../actions/authActions";
-import { getInfo } from "../../actions/stockActions";
-import { clearErrors } from "../../actions/errorActions";
 
-class LoginModal extends Component {
+import { registerStart } from "../../../actions/authActions";
+
+class Register extends Component {
   state = {
     modal: false,
     login: "",
@@ -26,18 +24,11 @@ class LoginModal extends Component {
     msg: null
   };
 
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired
-  };
-
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
       // Check for register error
-      if (error.id === "LOGIN_FAIL") {
+      if (error.id === "REGISTER_FAIL") {
         this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
@@ -53,7 +44,7 @@ class LoginModal extends Component {
 
   toggle = () => {
     // Clear errors
-    this.props.clearErrors();
+    //this.props.clearErrors();
     this.setState({
       modal: !this.state.modal
     });
@@ -66,15 +57,17 @@ class LoginModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
-    const { login, password } = this.state;
+    const { name, login, password } = this.state;
 
-    const user = {
+    // Create user object
+    const newUser = {
+      name,
       login,
       password
     };
-    // Attempt to login
- 
-    this.props.login(user);
+    // Attempt to register
+    this.props.dispatch(registerStart(newUser));
+    this.toggle();
   };
 
   render() {
@@ -83,12 +76,12 @@ class LoginModal extends Component {
     return (
       <div>
         <NavLink onClick={this.toggle} href="#">
-          Login
+          Register
         </NavLink>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
-            Login {"          "}
+            Register{"          "}
             {isLoading ? spinner : " "}
           </ModalHeader>
           <ModalBody>
@@ -98,7 +91,6 @@ class LoginModal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="item">Login</Label>
-
                 <Input
                   type="login"
                   name="login"
@@ -116,13 +108,8 @@ class LoginModal extends Component {
                   className="mb-3"
                   onChange={this.onChange} // use in typeracer
                 />
-                <Button
-                  disabled={isLoading}
-                  color="dark"
-                  style={{ marginTop: "2rem" }}
-                  block
-                >
-                  Login
+                <Button color="dark" style={{ marginTop: "2rem" }} block>
+                  Register
                 </Button>
               </FormGroup>
             </Form>
@@ -141,5 +128,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { login, clearErrors, getInfo }
-)(LoginModal);
+  null
+)(Register);

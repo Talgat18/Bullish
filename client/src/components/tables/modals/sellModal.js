@@ -11,9 +11,6 @@ import {
   Input
 } from "reactstrap";
 import { connect } from "react-redux";
-import { login } from "../../../actions/authActions";
-import { getInfo, sellingStock } from "../../../actions/stockActions";
-import { clearErrors } from "../../../actions/errorActions";
 
 class Sell extends Component {
   constructor(props) {
@@ -48,8 +45,7 @@ class Sell extends Component {
 
     this.toggle();
     this.props.onSell(amount, stockId);
-    this.props.onUpdate(amount, stockId)
-    
+    this.props.onUpdate(amount, stockId);
   };
 
   render() {
@@ -125,7 +121,4 @@ const mapStateToProps = state => ({
   stock: state.stock
 });
 
-export default connect(
-  mapStateToProps,
-  { login, clearErrors, getInfo, sellingStock }
-)(Sell);
+export default connect(mapStateToProps)(Sell);
