@@ -21,9 +21,11 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGNUP_START:
     case SIGNIN_START:
+      localStorage.setItem("name", action.payload.login);
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
+        name: action.payload.login
       };
     case SIGNUP_FETCH_SUCCEEDED:
     case SIGNIN_FETCH_SUCCEEDED:
@@ -38,6 +40,7 @@ const reducer = (state = initialState, action) => {
     case LOGOUT:
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+      localStorage.removeItem("name");
       return {
         ...state,
         isAuthenticated: false,

@@ -29,9 +29,8 @@ const registerFetchSucceed = tokens => ({
   payload: tokens
 });
 
-const refreshStart = refreshToken => ({
-  type: REFRESH_START,
-  payload: refreshToken
+const refreshStart = () => ({
+  type: REFRESH_START
 });
 
 const refreshSucceed = tokens => ({

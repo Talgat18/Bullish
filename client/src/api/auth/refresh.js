@@ -5,6 +5,6 @@ export default function refresh(token) {
     headers: new Headers({
       "Content-Type": "application/json"
     }),
-    body: { refreshToken: token }
+    body: JSON.stringify({ refreshToken: token })
   }).then(data => data);
 }

@@ -24,7 +24,6 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case GOT_STOCK_HISTORY:
-      console.log(action.payload);
       return {
         ...state,
         data: action.payload.price,

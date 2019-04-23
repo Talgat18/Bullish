@@ -50,7 +50,6 @@ function* signUpSaga(action) {
 function* signIn(action) {
   try {
     const tokens = yield call(login, action.payload);
-
     yield put(loginFetchSucceed(tokens));
   } catch (e) {
     yield put({ type: "USER_FETCH_FAILED", message: e.message });
@@ -63,7 +62,7 @@ function* refreshSaga() {
     const data = yield call(refresh, refreshToken);
     yield put(refreshSucceed(data));
   } catch (e) {
-    yield put({ type: "GET_INFO_FAILED", message: e.message });
+    yield put({ type: "REFRESH_FAILED", message: e.message });
   }
 }
 

@@ -19,8 +19,7 @@ import { NavLink, Link } from "react-router-dom";
 
 class AppNavbar extends Component {
   state = {
-    isOpen: false,
-    accessToken: this.props.auth.token
+    isOpen: false
   };
 
   static propTypes = {
@@ -28,9 +27,12 @@ class AppNavbar extends Component {
   };
 
   componentWillMount() {
-    this.props.dispatch(getInfoStart());
-    this.props.dispatch(getTransHistory());
-    this.props.dispatch(getStockList());
+    const { isAuthenticated } = this.props.auth;
+    if (isAuthenticated) {
+      this.props.dispatch(getInfoStart());
+      this.props.dispatch(getTransHistory());
+      this.props.dispatch(getStockList());
+    }
   }
 
   toggle = () => {
@@ -38,7 +40,7 @@ class AppNavbar extends Component {
   };
 
   render() {
-    const { isAuthenticated, name } = this.props.auth;
+    const { isAuthenticated } = this.props.auth;
     const { balance, loading } = this.props.stock;
 
     const spinner = <Spinner size="sm" type="grow" color="warning" />;
@@ -48,7 +50,9 @@ class AppNavbar extends Component {
           <span className="navbar-text mr-3">
             <strong className="welcoming">
               {" "}
-              {loading ? spinner : ` Welcome ${balance.name || name || ""}`}
+              {loading
+                ? spinner
+                : ` Welcome ${balance.name || localStorage.getItem("name")}`}
             </strong>
           </span>
         </NavItem>
