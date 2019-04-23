@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
-import { NavLink } from "reactstrap";
 import { connect } from "react-redux";
 import { logout } from "../../../actions/authActions";
+import { NavLink } from "react-router-dom";
 
 export class Logout extends Component {
   handleLogout = () => {
@@ -10,7 +10,11 @@ export class Logout extends Component {
   render() {
     return (
       <Fragment>
-        <NavLink onClick={this.handleLogout}>
+        <NavLink
+          className="nav-item nav-link"
+          onClick={this.handleLogout}
+          to="/home"
+        >
           Logout
         </NavLink>
       </Fragment>

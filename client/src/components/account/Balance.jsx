@@ -45,6 +45,7 @@ class Balance extends Component {
 
   componentWillReceiveProps() {
     this.setState({ myStocks: this.props.stock.balance.stocks });
+    this.setState({ count: this.props.stock.balance.stocks });
   }
 
   handlePageChange = page => {
@@ -88,7 +89,7 @@ class Balance extends Component {
   render() {
     const { balance, loading } = this.props.stock;
     const { items } = this.props.history;
-    const count = balance.stocks.length;
+    const { length: count } = this.props.stock.balance.stocks;
 
     const {
       pageSize,

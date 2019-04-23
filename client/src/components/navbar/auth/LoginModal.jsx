@@ -23,7 +23,6 @@ class LoginModal extends Component {
     msg: null
   };
 
-
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
@@ -56,7 +55,6 @@ class LoginModal extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    
 
     const { login, password } = this.state;
 
@@ -67,7 +65,6 @@ class LoginModal extends Component {
     // Attempt to login
 
     this.props.dispatch(loginStart(user));
-    console.log(user)
     this.toggle();
   };
 

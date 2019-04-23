@@ -30,6 +30,7 @@ import {
 import {
   getInfoFetchSucceed,
   getStockListSucceed,
+  getInfoFetchFailed,
   boughtStock,
   soldStock
 } from "../actions/stockActions";
@@ -70,8 +71,9 @@ function* getInfoSaga() {
   const token = yield select(getAccessToken);
   try {
     const data = yield call(getInfo, token);
-
-    yield put(getInfoFetchSucceed(data));
+    if (data.code === "401") {
+      yield put(getInfoFetchFailed(data));
+    } else yield put(getInfoFetchSucceed(data));
   } catch (e) {
     yield put({ type: "GET_INFO_FAILED", message: e.message });
   }

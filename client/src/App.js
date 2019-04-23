@@ -6,6 +6,7 @@ import Buy from "./components/routes/Buy";
 import Balance from "./components/routes/BalanceR";
 import Test from "./components/routes/Test";
 import NotFound from "./components/routes/NotFound";
+import { getInfoStart } from "./actions/stockActions";
 
 import { Provider } from "react-redux";
 import store from "./store";
@@ -15,7 +16,7 @@ import "./App.css";
 
 class App extends Component {
   componentDidMount() {
-    //store.dispatch(loadUser());
+    store.dispatch(getInfoStart());
   }
   render() {
     return (

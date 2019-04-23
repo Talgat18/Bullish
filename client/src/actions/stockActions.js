@@ -1,6 +1,7 @@
 import {
   GETINFO_START,
   GETINFO_FETCH_SUCCEEDED,
+  GETINFO_FAILED,
   GET_STOCK_LIST,
   GET_STOCK_LIST_SUCCEED,
   BUYING_STOCK,
@@ -15,6 +16,11 @@ const getInfoStart = () => ({
 
 const getInfoFetchSucceed = data => ({
   type: GETINFO_FETCH_SUCCEEDED,
+  payload: data
+});
+
+const getInfoFetchFailed = data => ({
+  type: GETINFO_FAILED,
   payload: data
 });
 
@@ -46,10 +52,10 @@ const soldStock = data => ({
   payload: data
 });
 
-
 export {
   getInfoStart,
   getInfoFetchSucceed,
+  getInfoFetchFailed,
   getStockList,
   getStockListSucceed,
   buyingStock,
