@@ -1,7 +1,7 @@
 import {
   GETINFO_START,
   GETINFO_FETCH_SUCCEEDED,
-  GETINFO_FAILED,
+  REFRESH_START,
   GET_STOCK_LIST,
   GET_STOCK_LIST_SUCCEED,
   BUYING_STOCK,
@@ -20,7 +20,7 @@ const getInfoFetchSucceed = data => ({
 });
 
 const getInfoFetchFailed = data => ({
-  type: GETINFO_FAILED,
+  type: GETINFO_FETCH_SUCCEEDED,
   payload: data
 });
 

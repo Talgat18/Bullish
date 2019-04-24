@@ -26,14 +26,12 @@ class LoginModal extends Component {
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
-      // Check for register error
       if (error.id === "LOGIN_FAIL") {
         this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
       }
     }
-    // If auth --> close modal
     if (this.state.modal) {
       if (isAuthenticated) {
         this.toggle();
@@ -57,13 +55,10 @@ class LoginModal extends Component {
     e.preventDefault();
 
     const { login, password } = this.state;
-
     const user = {
       login,
       password
     };
-    // Attempt to login
-
     this.props.dispatch(loginStart(user));
     this.toggle();
   };
@@ -89,14 +84,13 @@ class LoginModal extends Component {
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="item">Login</Label>
-
                 <Input
                   type="login"
                   name="login"
                   id="login"
                   placeholder="Login"
                   className="mb-3"
-                  onChange={this.onChange} // use in typeracer
+                  onChange={this.onChange}
                 />
                 <Label for="item">Password</Label>
                 <Input
@@ -105,7 +99,7 @@ class LoginModal extends Component {
                   id="password"
                   placeholder="Password"
                   className="mb-3"
-                  onChange={this.onChange} // use in typeracer
+                  onChange={this.onChange}
                 />
                 <Button
                   disabled={isLoading}

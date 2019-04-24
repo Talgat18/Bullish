@@ -75,7 +75,7 @@ class StockList extends Component {
     const { balance, loading, stocks } = this.props.stock;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
-    const { data } = getPaggedData(
+    const data = getPaggedData(
       stocks,
       pageSize,
       currentPage,

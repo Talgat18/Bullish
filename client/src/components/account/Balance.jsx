@@ -6,7 +6,6 @@ import { Container, Spinner } from "reactstrap";
 import { connect } from "react-redux";
 
 import { getPaggedData } from "../../utils/getPaggedData";
-import { getPaggedHistoryData } from "../../utils/getPaggedHistoryData";
 
 import Pagination from "../common/pagination";
 import StockTable from "../tables/stockTable";
@@ -90,7 +89,6 @@ class Balance extends Component {
     const { balance, loading } = this.props.stock;
     const { items } = this.props.history;
     const { length: count } = this.props.stock.balance.stocks;
-
     const {
       pageSize,
       currentPage,
@@ -105,7 +103,7 @@ class Balance extends Component {
     const historyItems = items;
     const countHistory = items ? items.length : "";
 
-    const { history } = getPaggedHistoryData(
+    const history = getPaggedData(
       historyItems,
       pageSizeHistory,
       currentPageHistory,
@@ -113,7 +111,7 @@ class Balance extends Component {
       searchQueryHistory
     );
 
-    const { data } = getPaggedData(
+    const data = getPaggedData(
       this.state.myStocks,
       pageSize,
       currentPage,
@@ -124,9 +122,7 @@ class Balance extends Component {
     const myStockList = (
       <div className="row">
         <span className="navbar-text mr-3">
-          {balance
-            ? ` Ваш баланс:  $${balance.balance} / ₽${balance.balance * 65}`
-            : " "}
+          {balance ? ` Ваш баланс:  $${balance.balance}}` : " "}
         </span>{" "}
         <span className="navbar-text mr-3">
           <Link className="badge badge-info" to="/stocks">
