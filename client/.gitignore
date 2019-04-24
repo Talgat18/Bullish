@@ -10,6 +10,7 @@
 
 # production
 /build
+Tasks.md
 
 # misc
 .DS_Store
