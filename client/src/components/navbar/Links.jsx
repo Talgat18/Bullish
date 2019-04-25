@@ -8,8 +8,6 @@ import LoginModal from "./auth/LoginModal";
 import RegisterModal from "./auth/RegisterModal";
 
 class Links extends Component {
-  state = {};
-
   renderGuestLinks() {
     return (
       <Fragment>

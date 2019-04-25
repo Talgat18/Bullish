@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Spinner } from "reactstrap";
 import { connect } from "react-redux";
@@ -8,12 +8,10 @@ import {
   buyingStock
 } from "../../actions/stockActions";
 import { getStockHistory } from "../../actions/chartActions";
-import { getPaggedData } from "../../utils/getPaggedData";
-import Pagination from "../common/pagination";
-import AllStockTable from "../tables/allStockTable";
-import SearchBox from "../common/searchBox";
 
-class StockList extends Component {
+import RenderStockList from "./renderStockList";
+
+class StockList extends RenderStockList {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,19 +67,8 @@ class StockList extends Component {
     this.setState({ currentPage: page });
   };
 
-  render() {
-    const { balance, loading, stocks } = this.props.stock;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
-
-    const data = getPaggedData(
-      stocks,
-      pageSize,
-      currentPage,
-      sortColumn,
-      searchQuery
-    );
-
-    const spinner = (
+  renderSpinner() {
+    return (
       <Spinner
         className="spinner-center"
         type="grow"
@@ -89,42 +76,20 @@ class StockList extends Component {
         color="warning"
       />
     );
+  }
 
-    const stock_list = (
-      <div>
-        <div>
-          <SearchBox value={searchQuery} onChange={this.handleSearch} />
-          <AllStockTable
-            stocks={data}
-            sortColumn={sortColumn}
-            onSort={this.handleSort}
-            onChart={this.handleChart}
-            onBuy={this.handleBuy}
-          />
-
-          <Pagination
-            itemsCount={stocks.length}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            onPageChange={this.handlePageChange}
-          />
-        </div>
-        <div />
-      </div>
-    );
+  render() {
+    const { balance, loading } = this.props.stock;
     return (
       <Container className="stock-container" style={{ color: "black" }}>
-        <span className="navbar-text mr-3">
-          <strong> {balance ? `Ваш баланс: $${balance.balance}` : " "}</strong>
-        </span>
-        <span className="navbar-text mr-3">
-          <Link className="badge badge-info" to="/balance">
-            Sell some!
-          </Link>
-        </span>
+        <strong className="navbar-text mr-3">
+          {balance ? `Ваш баланс: $${balance.balance}` : " "}
+        </strong>
+        <Link className="badge badge-info" to="/balance">
+          Sell some!
+        </Link>
         <div style={{ textAlign: "center" }}>
-          {" "}
-          {loading ? spinner : stock_list}
+          {loading ? this.renderSpinner() : this.renderStockList()}
         </div>
       </Container>
     );
