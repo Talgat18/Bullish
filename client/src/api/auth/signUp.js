@@ -1,6 +1,6 @@
 export default function signUp(user) {
   console.log(user)
-  return fetch("https://stockstore.herokuapp.com/api/auth/signup", {
+  return fetch("https://stockstore.herokuapp.com/api/auth/signup/full", {
     method: "POST",
     mode: "cors",
     headers: {

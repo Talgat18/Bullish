@@ -2,23 +2,31 @@ import React, { Component } from "react";
 import InitTable from "./commonTable/table";
 import Buy from "./modals/buyModal";
 import PriceDelta from "../common/priceDelta";
+import Icons from '../common/icons'
 
 class StockTable extends Component {
   columns = [
-    { path: "id", label: "Id" },
+    {
+      path: "iconUrl",
+      label: "Icon",
+      key: "icon",
+      content: stock => <Icons iconUrl={stock.iconUrl} />
+    },
     { path: "name", label: "Name" },
-    { path: "code", label: "Code" },
     { path: "price", label: "Price" },
     { path: "count", label: "Count" },
+
     {
       path: "priceDelta",
       label: "PriceDelta",
-      key: "prize",
+      key: "priceDelta",
       content: stock => <PriceDelta priceDelta={stock.priceDelta} />
     },
     {
       key: "buyModal",
-      content: stock => <Buy onBuy={this.props.onBuy} stockId={stock.id} price={stock.price} />
+      content: stock => (
+        <Buy onBuy={this.props.onBuy} stockId={stock.id} price={stock.price} />
+      )
     },
     {
       key: "chart",

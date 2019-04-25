@@ -2,10 +2,16 @@ import React, { Component } from "react";
 import InitTable from "./commonTable/table";
 import Sell from "./modals/sellModal";
 import PriceDelta from "../common/priceDelta";
+import Icons from "../common/icons";
 
 class StockTable extends Component {
   columns = [
-    { path: "id", label: "Id" },
+    {
+      path: "iconUrl",
+      label: "Icon",
+      key: "icon",
+      content: stock => <Icons width={33} height={33} iconUrl={stock.iconUrl} />
+    },
     { path: "name", label: "Name" },
     { path: "code", label: "Code" },
     { path: "price", label: "Price" },
@@ -18,7 +24,13 @@ class StockTable extends Component {
     {
       key: "sellModal",
       content: stock => (
-        <Sell stockId={stock.id} price={stock.price} count={stock.count} onSell={this.props.onSell} onUpdate={this.props.onUpdate}/>
+        <Sell
+          stockId={stock.id}
+          price={stock.price}
+          count={stock.count}
+          onSell={this.props.onSell}
+          onUpdate={this.props.onUpdate}
+        />
       )
     }
   ];

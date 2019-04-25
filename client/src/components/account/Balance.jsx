@@ -13,19 +13,21 @@ class Balance extends Renders {
     isAuthenticated: PropTypes.bool
   };
   state = {
+    type: "stocks",
     pageSize: 3,
     currentPage: 1,
     searchQuery: "",
     sortColumn: {
-      path: "id",
+      path: "name",
       order: "asc"
     },
-    pageSizeHistory: 2,
+    typeHistory: "history",
+    pageSizeHistory: 3,
     currentPageHistory: 1,
     searchQueryHistory: "",
     sortColumnHistory: {
       path: "transactionId",
-      order: "asc"
+      order: "desc"
     },
     myStocks: []
   };

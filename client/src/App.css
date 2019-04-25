@@ -102,3 +102,22 @@
 .clickable {
   cursor: pointer;
 }
+
+.avatar-img {
+  border-radius: 50%;
+  border: 2px solid;
+  border-color: #f1c40f;
+}
+
+.stock-list {
+  font-size: 14px;
+}
+.stock-list td {
+  vertical-align: center;
+}
+.stock-list td:nth-child(2) {
+  min-width: 125px !important;
+}
+.fa {
+  position: absolute;
+}

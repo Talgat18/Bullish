@@ -26,51 +26,10 @@ class Renders extends Component {
       <div>
         <span className="navbar-text mr-3">You have no stocks!</span>
         <span className="navbar-text mr-3">
-          <a href="/stocks" className="badge badge-info">
+          <Link className="badge badge-info" to="/stocks">
             Buy some!
-          </a>
+          </Link>
         </span>
-      </div>
-    );
-  }
-
-  renderHistoryTable() {
-    const { items } = this.props.history;
-    const {
-      pageSizeHistory,
-      currentPageHistory,
-      sortColumnHistory,
-      searchQueryHistory
-    } = this.state;
-
-    const historyItems = items;
-    const countHistory = items ? items.length : "";
-
-    const history = getPaggedData(
-      historyItems,
-      pageSizeHistory,
-      currentPageHistory,
-      sortColumnHistory,
-      searchQueryHistory
-    );
-    return (
-      <div>
-        <strong className="navbar-text mt-5">История транзакций</strong>{" "}
-        <SearchBox
-          value={searchQueryHistory}
-          onChange={this.handleSearchHistory}
-        />
-        <HistoryTable
-          items={history}
-          sortColumn={sortColumnHistory}
-          onSort={this.handleSortHistory}
-        />
-        <Pagination
-          itemsCount={countHistory}
-          pageSize={pageSizeHistory}
-          currentPage={currentPageHistory}
-          onPageChange={this.handlePageChangeHistory}
-        />
       </div>
     );
   }
@@ -78,21 +37,29 @@ class Renders extends Component {
   renderMyStocksTable() {
     const { length: count } = this.props.stock.balance.stocks;
     const { balance } = this.props.stock;
-    const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
+    const { pageSize, currentPage, sortColumn, searchQuery, type } = this.state;
 
     const data = getPaggedData(
       this.state.myStocks,
       pageSize,
       currentPage,
       sortColumn,
-      searchQuery
+      searchQuery,
+      type
     );
     return (
       <div className="row">
-        <span className="navbar-text mr-3">
+        <img
+          className="avatar-img mr-3"
+          width="60"
+          height="60"
+          src={balance.icon}
+          alt="img"
+        />
+        <strong className="mr-3">
           {balance ? ` Ваш баланс:  $${balance.balance}` : " "}
-        </span>{" "}
-        <span className="navbar-text mr-3">
+        </strong>{" "}
+        <span className="mr-3">
           <Link className="badge badge-info" to="/stocks">
             Buy some!
           </Link>
@@ -111,6 +78,49 @@ class Renders extends Component {
           currentPage={currentPage}
           onPageChange={this.handlePageChange}
         />{" "}
+      </div>
+    );
+  }
+
+  renderHistoryTable() {
+    const { items } = this.props.history;
+    const {
+      pageSizeHistory,
+      currentPageHistory,
+      sortColumnHistory,
+      searchQueryHistory,
+      typeHistory
+    } = this.state;
+
+    const historyItems = items;
+    const countHistory = items ? items.length : "";
+
+    const history = getPaggedData(
+      historyItems,
+      pageSizeHistory,
+      currentPageHistory,
+      sortColumnHistory,
+      searchQueryHistory,
+      typeHistory
+    );
+    return (
+      <div>
+        <strong>История транзакций</strong>{" "}
+        <SearchBox
+          value={searchQueryHistory}
+          onChange={this.handleSearchHistory}
+        />
+        <HistoryTable
+          items={history}
+          sortColumn={sortColumnHistory}
+          onSort={this.handleSortHistory}
+        />
+        <Pagination
+          itemsCount={countHistory}
+          pageSize={pageSizeHistory}
+          currentPage={currentPageHistory}
+          onPageChange={this.handlePageChangeHistory}
+        />
       </div>
     );
   }

@@ -20,7 +20,7 @@ class StockList extends RenderStockList {
       currentPage: 1,
       searchQuery: "",
       sortColumn: {
-        path: "id",
+        path: "name",
         order: "asc"
       },
       stockz: this.props.stock.stockz

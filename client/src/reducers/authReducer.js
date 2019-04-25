@@ -68,15 +68,10 @@ const reducer = (state = initialState, action) => {
         refreshFailed: false
       };
     case REFRESH_FAILED:
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      localStorage.removeItem("name");
       return {
         ...state,
-        isAuthenticated: false,
         isLoading: false,
         refreshFailed: true,
-        redirect: true
       };
     default:
       return state;

@@ -10,6 +10,7 @@ const initialState = {
   stocks: [],
   loading: false,
   balance: {
+    icon: "",
     name: "",
     stocks: [],
     balance: 0
@@ -36,6 +37,7 @@ export default function(state = initialState, action) {
         loading: true
       };
     case GET_STOCK_LIST_SUCCEED:
+      console.log(action.payload.items);
       return {
         ...state,
         stocks: action.payload.items,

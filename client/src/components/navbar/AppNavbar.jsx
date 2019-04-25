@@ -37,7 +37,7 @@ class AppNavbar extends Links {
         style={{ background: "#2f3640", height: "3rem" }}
         dark
         expand="sm"
-        className="mb-5"
+        className="mb-3"
       >
         <Container>
           <Link className="navbar-brand" to="/">

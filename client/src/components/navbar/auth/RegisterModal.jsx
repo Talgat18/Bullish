@@ -20,13 +20,21 @@ class Register extends Form {
     modal: false,
     msg: null,
     data: {
+      name: "",
       login: "",
-      password: ""
+      password: "",
+      icon: ""
     },
     errors: {}
   };
 
   schema = {
+    name: Joi.string()
+      .required()
+      .label("Name"),
+    icon: Joi.string()
+      .required()
+      .label("Icon"),
     login: Joi.string()
       .required()
       .label("Login"),
@@ -61,10 +69,12 @@ class Register extends Form {
   };
 
   doSubmit = () => {
-    const { login, password } = this.state.data;
+    const { login, name, icon, password } = this.state.data;
     const user = {
+      name,
       login,
-      password
+      password,
+      icon
     };
     this.props.dispatch(registerStart(user));
   };
@@ -87,6 +97,8 @@ class Register extends Form {
             {msg ? <Alert color="danger">{msg}</Alert> : null}
             <form onSubmit={this.onSubmit}>
               <FormGroup>
+                {this.renderInput("name", "Name")}
+                {this.renderInput("icon", "Icon")}
                 {this.renderInput("login", "Login")}
                 {this.renderInput("password", "Password", "password")}
                 {this.renderButton("Register")}
