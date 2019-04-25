@@ -1,16 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
 import { Container } from "reactstrap";
 import { connect } from "react-redux";
-
-import { getPaggedData } from "../../utils/getPaggedData";
-
-import Pagination from "../common/pagination";
-import StockTable from "../tables/stockTable";
-import HistoryTable from "../tables/historyTable";
-import SearchBox from "../common/searchBox";
 
 import { getInfoStart, sellingStock } from "../../actions/stockActions";
 import { getTransHistory } from "../../actions/historyActions";
@@ -73,7 +65,6 @@ class Balance extends Renders {
   };
 
   handleUpdate = (amount, stockId) => {
-    // доделать amount
     const myStocks = this.state.myStocks.filter(m => m.id !== stockId);
     this.setState({ myStocks });
   };
@@ -87,86 +78,8 @@ class Balance extends Renders {
   };
 
   render() {
-    const { balance, loading } = this.props.stock;
-    const { items } = this.props.history;
+    const { loading } = this.props.stock;
     const { length: count } = this.props.stock.balance.stocks;
-    const {
-      pageSize,
-      currentPage,
-      sortColumn,
-      searchQuery,
-      pageSizeHistory,
-      currentPageHistory,
-      sortColumnHistory,
-      searchQueryHistory
-    } = this.state;
-
-    const historyItems = items;
-    const countHistory = items ? items.length : "";
-
-    const history = getPaggedData(
-      historyItems,
-      pageSizeHistory,
-      currentPageHistory,
-      sortColumnHistory,
-      searchQueryHistory
-    );
-
-    const data = getPaggedData(
-      this.state.myStocks,
-      pageSize,
-      currentPage,
-      sortColumn,
-      searchQuery
-    );
-
-    const myStockList = (
-      <div className="row">
-        <span className="navbar-text mr-3">
-          {balance ? ` Ваш баланс:  $${balance.balance}` : " "}
-        </span>{" "}
-        <span className="navbar-text mr-3">
-          <Link className="badge badge-info" to="/stocks">
-            Buy some!
-          </Link>
-        </span>
-        <SearchBox value={searchQuery} onChange={this.handleSearch} />
-        <StockTable
-          stocks={data}
-          sortColumn={sortColumn}
-          onSort={this.handleSort}
-          onSell={this.handleSell}
-          onUpdate={this.handleUpdate}
-        />
-        <Pagination
-          itemsCount={count}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />{" "}
-      </div>
-    );
-
-    const historyList = (
-      <div>
-        <strong className="navbar-text mt-5">История транзакций</strong>{" "}
-        <SearchBox
-          value={searchQueryHistory}
-          onChange={this.handleSearchHistory}
-        />
-        <HistoryTable
-          items={history}
-          sortColumn={sortColumnHistory}
-          onSort={this.handleSortHistory}
-        />
-        <Pagination
-          itemsCount={countHistory}
-          pageSize={pageSizeHistory}
-          currentPage={currentPageHistory}
-          onPageChange={this.handlePageChangeHistory}
-        />
-      </div>
-    );
 
     return (
       <Container style={{ color: "#2f3640" }}>
@@ -174,8 +87,8 @@ class Balance extends Renders {
           ? this.renderLoader()
           : count === 0
           ? this.renderNoStocks()
-          : myStockList}
-        {historyList}
+          : this.renderMyStocksTable()}
+        {this.renderHistoryTable()}
       </Container>
     );
   }

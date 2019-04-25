@@ -99,8 +99,6 @@ class StockList extends RenderStockList {
 const mapStateToProps = state => ({
   stock: state.stock,
   isAuthenticated: state.auth.isAuthenticated,
-  score: state.auth.score,
-  ID: state.auth.user
 });
 
 export default connect(mapStateToProps)(StockList);
