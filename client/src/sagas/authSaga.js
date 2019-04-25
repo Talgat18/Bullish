@@ -22,28 +22,15 @@ import getStockList from "../api/stocks/getStockList";
 import buyingStock from "../api/stocks/buyStock";
 import sellingStock from "../api/stocks/sellStock";
 import getChart from "../api/getChart";
-import {
-  loginFetchSucceed,
-  registerFetchSucceed,
-  refreshSucceed,
-  refreshFailed,
-  loginFail
-} from "../actions/authActions";
-import {
-  getInfoFetchSucceed,
-  getStockListSucceed,
-  getInfoFetchFailed,
-  boughtStock,
-  soldStock
-} from "../actions/stockActions";
+import * as authActions from "../actions/authActions";
+import * as stockActions from "../actions/stockActions";
 import { getStockHistorySucceed } from "../actions/chartActions";
 import { getTransHistorySucceed } from "../actions/historyActions";
-
 import { returnErrors } from "../actions/errorsActions";
 
-import * as actions from "../actions/authActions";
+// import * as actions from "../actions/authActions";
 
-const { loginUser } = actions;
+// const { loginUser } = actions;
 
 function* signUpSaga(action) {
   try {
@@ -54,9 +41,9 @@ function* signUpSaga(action) {
 
     if (data.code) {
       yield put(returnErrors(data.message, data.code, "REGISTER_FAIL"));
-      yield put(loginFail());
+      yield put(authActions.loginFail());
     } else {
-      yield put(loginFetchSucceed(data));
+      yield put(authActions.registerFetchSucceed(data));
     }
   } catch (e) {
     yield put({ type: "USER_FETCH_FAILED", message: e.message });
@@ -71,9 +58,9 @@ function* signIn(action) {
 
     if (data.code) {
       yield put(returnErrors(data.message, data.code, "LOGIN_FAIL"));
-      yield put(loginFail());
+      yield put(authActions.loginFail());
     } else {
-      yield put(loginFetchSucceed(data));
+      yield put(authActions.loginFetchSucceed(data));
     }
   } catch (e) {
     yield put({ type: "USER_FETCH_FAILED", message: e.message });
@@ -88,8 +75,8 @@ function* refreshSaga() {
     localStorage.setItem("refreshToken", data.refreshToken);
 
     if (data.code === "401") {
-      yield put(refreshFailed());
-    } else yield put(refreshSucceed(data));
+      yield put(authActions.refreshFailed());
+    } else yield put(authActions.refreshSucceed(data));
   } catch (e) {
     yield put({ type: "REFRESH_FAILED", message: e.message });
   }
@@ -100,8 +87,8 @@ function* getInfoSaga() {
   try {
     const data = yield call(getInfo, token);
     if (data.code === "401") {
-      yield put(getInfoFetchFailed());
-    } else yield put(getInfoFetchSucceed(data));
+      yield put(stockActions.getInfoFetchFailed());
+    } else yield put(stockActions.getInfoFetchSucceed(data));
   } catch (e) {
     yield put({ type: "GET_INFO_FAILED", message: e.message });
   }
@@ -123,7 +110,7 @@ function* getStockListSaga() {
   try {
     const data = yield call(getStockList, token);
 
-    yield put(getStockListSucceed(data));
+    yield put(stockActions.getStockListSucceed(data));
   } catch (e) {
     yield put({ type: "GET_STOCK_LIST_FAILED", message: e.message });
   }
@@ -135,7 +122,7 @@ function* buyingStockSaga(action) {
   try {
     const data = yield call(buyingStock, action.payload, token);
 
-    yield put(boughtStock(data));
+    yield put(stockActions.boughtStock(data));
   } catch (e) {
     yield put({ type: "BUYING_STOCK_FAILED", message: e.message });
   }
@@ -147,7 +134,7 @@ function* sellingStockSaga(action) {
   try {
     const data = yield call(sellingStock, action.payload, token);
 
-    yield put(soldStock(data));
+    yield put(stockActions.soldStock(data));
   } catch (e) {
     yield put({ type: "SELLING_STOCK_FAILED", message: e.message });
   }
