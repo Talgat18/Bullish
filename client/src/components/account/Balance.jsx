@@ -1,7 +1,7 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import { Container } from "reactstrap";
+import { Container, Alert } from "reactstrap";
 import { connect } from "react-redux";
 
 import { getInfoStart, sellingStock } from "../../actions/stockActions";
@@ -80,9 +80,11 @@ class Balance extends Renders {
   render() {
     const { loading } = this.props.stock;
     const { length: count } = this.props.stock.balance.stocks;
+    const { isAuthenticated } = this.props;
 
     return (
       <Container style={{ color: "#2f3640" }}>
+        {!isAuthenticated ? <Alert color="danger">Please Login!</Alert> : null}
         {loading
           ? this.renderLoader()
           : count === 0

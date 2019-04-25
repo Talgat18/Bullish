@@ -13,6 +13,7 @@ import {
 import { connect } from "react-redux";
 
 import { registerStart } from "../../../actions/authActions";
+import { clearErrors } from "../../../actions/errorsActions";
 
 class Register extends Form {
   state = {
@@ -28,7 +29,7 @@ class Register extends Form {
   schema = {
     login: Joi.string()
       .required()
-      .label("Yo"),
+      .label("Login"),
     password: Joi.string()
       .required()
       .min(5)
@@ -53,6 +54,7 @@ class Register extends Form {
   }
 
   toggle = () => {
+    this.props.dispatch(clearErrors());
     this.setState({
       modal: !this.state.modal
     });
@@ -65,7 +67,6 @@ class Register extends Form {
       password
     };
     this.props.dispatch(registerStart(user));
-    this.toggle();
   };
 
   render() {

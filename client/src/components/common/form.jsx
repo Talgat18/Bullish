@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import { Button } from "reactstrap";
 import Input from "./input";
+import { clearErrors } from "../../actions/errorsActions";
 
 class Form extends Component {
   state = {
@@ -30,12 +31,12 @@ class Form extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
     const errors = this.validate();
     this.setState({ errors: errors || {} });
     if (errors) return;
 
-    this.doSubmit();
+    this.doSubmit(e);
+    this.props.dispatch(clearErrors());
   };
 
   onChange = ({ currentTarget: input }) => {

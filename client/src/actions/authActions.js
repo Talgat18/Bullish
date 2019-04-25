@@ -1,7 +1,9 @@
 import {
   SIGNUP_FETCH_SUCCEEDED,
   SIGNUP_START,
+  SIGNUP_FAILED,
   SIGNIN_START,
+  SIGNIN_FAILED,
   SIGNIN_FETCH_SUCCEEDED,
   LOGOUT,
   CHECK_USER,
@@ -10,31 +12,29 @@ import {
   REFRESH_FAILED
 } from "../constants/types";
 
-
-const REQUEST = 'REQUEST'
-const SUCCESS = 'SUCCESS'
-const FAILURE = 'FAILURE'
+const REQUEST = "REQUEST";
+const SUCCESS = "SUCCESS";
+const FAILURE = "FAILURE";
 
 function createRequestTypes(base) {
   return [REQUEST, SUCCESS, FAILURE].reduce((acc, type) => {
-		acc[type] = `${base}_${type}`
-		return acc
-	}, {})
+    acc[type] = `${base}_${type}`;
+    return acc;
+  }, {});
 }
 
-export const LOGIN = createRequestTypes('LOGIN')
-export const REGISTER = createRequestTypes('REGISTER')
-
+export const LOGIN = createRequestTypes("LOGIN");
+export const REGISTER = createRequestTypes("REGISTER");
 
 function action(type, payload = {}) {
-  return {type, ...payload}
+  return { type, ...payload };
 }
 
 export const loginUser = {
-  request: login => action(LOGIN[REQUEST], {login}),
-  success: (login, response) => action(LOGIN[SUCCESS], {login, response}),
-  failure: (login, error) => action(LOGIN[FAILURE], {login, error}),
-}
+  request: login => action(LOGIN[REQUEST], { login }),
+  success: (login, response) => action(LOGIN[SUCCESS], { login, response }),
+  failure: (login, error) => action(LOGIN[FAILURE], { login, error })
+};
 
 const loginStart = user => ({
   type: SIGNIN_START,
@@ -46,6 +46,10 @@ const loginFetchSucceed = tokens => ({
   payload: tokens
 });
 
+const loginFail = () => ({
+  type: SIGNIN_FAILED
+});
+
 const registerStart = user => ({
   type: SIGNUP_START,
   payload: user
@@ -54,6 +58,10 @@ const registerStart = user => ({
 const registerFetchSucceed = tokens => ({
   type: SIGNUP_FETCH_SUCCEEDED,
   payload: tokens
+});
+
+const registerFail = () => ({
+  type: SIGNUP_FAILED
 });
 
 const refreshStart = () => ({
@@ -86,5 +94,7 @@ export {
   checkUser,
   refreshStart,
   refreshSucceed,
-  refreshFailed
+  refreshFailed,
+  loginFail,
+  registerFail
 };

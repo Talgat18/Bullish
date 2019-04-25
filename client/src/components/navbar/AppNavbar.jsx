@@ -8,8 +8,6 @@ import { getInfoStart, getStockList } from "../../actions/stockActions";
 import { getTransHistory } from "../../actions/historyActions";
 import { Link } from "react-router-dom";
 
-import { refreshStart } from "../../actions/authActions";
-
 class AppNavbar extends Links {
   state = {
     isOpen: false
@@ -21,13 +19,13 @@ class AppNavbar extends Links {
 
   componentWillMount() {
     const { isAuthenticated } = this.props.auth;
+
     if (isAuthenticated) {
       this.props.dispatch(getInfoStart());
       this.props.dispatch(getTransHistory());
       this.props.dispatch(getStockList());
     }
   }
-
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };

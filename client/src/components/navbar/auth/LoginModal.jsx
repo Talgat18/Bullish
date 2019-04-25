@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 import { loginStart } from "../../../actions/authActions";
+import { clearErrors } from "../../../actions/errorsActions";
 
 class LoginModal extends Form {
   state = {
@@ -51,21 +52,24 @@ class LoginModal extends Form {
   }
 
   toggle = () => {
-    // Clear errors
-    //this.props.clearErrors();
+    this.props.dispatch(clearErrors());
     this.setState({
       modal: !this.state.modal
     });
   };
 
-  doSubmit = () => {
+  doSubmit = e => {
+    e.preventDefault();
     const { login, password } = this.state.data;
     const user = {
       login,
       password
     };
+    if (this.state.msg) {
+      return null;
+    }
+
     this.props.dispatch(loginStart(user));
-    this.toggle();
   };
 
   render() {
