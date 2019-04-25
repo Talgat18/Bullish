@@ -6,7 +6,8 @@ import {
   LOGOUT,
   CHECK_USER,
   REFRESH_START,
-  REFRESH_SUCCEED
+  REFRESH_SUCCEED,
+  REFRESH_FAILED
 } from "../constants/types";
 
 
@@ -64,6 +65,10 @@ const refreshSucceed = tokens => ({
   payload: tokens
 });
 
+const refreshFailed = () => ({
+  type: REFRESH_FAILED
+});
+
 const logout = () => ({
   type: LOGOUT
 });
@@ -80,5 +85,6 @@ export {
   logout,
   checkUser,
   refreshStart,
-  refreshSucceed
+  refreshSucceed,
+  refreshFailed
 };

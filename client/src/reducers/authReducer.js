@@ -4,10 +4,12 @@ import {
   SIGNIN_START,
   SIGNIN_FETCH_SUCCEEDED,
   LOGOUT,
-  REFRESH_SUCCEED
+  REFRESH_SUCCEED,
+  REFRESH_FAILED
 } from "../constants/types";
 
 const initialState = {
+  refreshFailed: false,
   isLoading: false,
   name: "",
   tokens: {
@@ -29,13 +31,12 @@ const reducer = (state = initialState, action) => {
       };
     case SIGNUP_FETCH_SUCCEEDED:
     case SIGNIN_FETCH_SUCCEEDED:
-      localStorage.setItem("accessToken", action.payload.accessToken);
-      localStorage.setItem("refreshToken", action.payload.refreshToken);
       return {
         ...state,
         isLoading: false,
         tokens: action.payload,
-        isAuthenticated: true
+        isAuthenticated: true,
+        refreshFailed: false
       };
     case LOGOUT:
       localStorage.removeItem("accessToken");
@@ -47,12 +48,21 @@ const reducer = (state = initialState, action) => {
         isLoading: false
       };
     case REFRESH_SUCCEED:
-      localStorage.setItem("accessToken", action.payload.accessToken);
-      localStorage.setItem("refreshToken", action.payload.refreshToken);
       return {
         ...state,
         isAuthenticated: true,
-        isLoading: false
+        isLoading: false,
+        refreshFailed: false
+      };
+    case REFRESH_FAILED:
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("name");
+      return {
+        ...state,
+        isAuthenticated: false,
+        isLoading: false,
+        refreshFailed: true
       };
     default:
       return state;

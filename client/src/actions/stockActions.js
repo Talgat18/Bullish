@@ -19,9 +19,8 @@ const getInfoFetchSucceed = data => ({
   payload: data
 });
 
-const getInfoFetchFailed = data => ({
-  type: REFRESH_START,
-  payload: data
+const getInfoFetchFailed = () => ({
+  type: REFRESH_START
 });
 
 const getStockList = () => ({

@@ -25,7 +25,8 @@ import getChart from "../api/getChart";
 import {
   loginFetchSucceed,
   registerFetchSucceed,
-  refreshSucceed
+  refreshSucceed,
+  refreshFailed
 } from "../actions/authActions";
 import {
   getInfoFetchSucceed,
@@ -37,9 +38,9 @@ import {
 import { getStockHistorySucceed } from "../actions/chartActions";
 import { getTransHistorySucceed } from "../actions/historyActions";
 
-import * as actions from '../actions/authActions'
+import * as actions from "../actions/authActions";
 
-const { loginUser } = actions
+const { loginUser } = actions;
 
 function* signUpSaga(action) {
   try {
@@ -54,6 +55,8 @@ function* signUpSaga(action) {
 function* signIn(action) {
   try {
     const tokens = yield call(login, action.payload);
+    localStorage.setItem("accessToken", tokens.accessToken);
+    localStorage.setItem("refreshToken", tokens.refreshToken);
     yield put(loginFetchSucceed(tokens));
   } catch (e) {
     yield put({ type: "USER_FETCH_FAILED", message: e.message });
@@ -64,7 +67,12 @@ function* refreshSaga() {
   const refreshToken = yield select(getRefreshToken);
   try {
     const data = yield call(refresh, refreshToken);
-    yield put(refreshSucceed(data));
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("refreshToken", data.refreshToken);
+
+    if (data.code === "401") {
+      yield put(refreshFailed());
+    } else yield put(refreshSucceed(data));
   } catch (e) {
     yield put({ type: "REFRESH_FAILED", message: e.message });
   }
@@ -75,7 +83,7 @@ function* getInfoSaga() {
   try {
     const data = yield call(getInfo, token);
     if (data.code === "401") {
-      yield put(getInfoFetchFailed(data));
+      yield put(getInfoFetchFailed());
     } else yield put(getInfoFetchSucceed(data));
   } catch (e) {
     yield put({ type: "GET_INFO_FAILED", message: e.message });
