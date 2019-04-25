@@ -1,6 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../../common/form";
+import Form from "../common/form";
 import {
   Modal,
   ModalHeader,
@@ -11,8 +11,8 @@ import {
   Spinner
 } from "reactstrap";
 import { connect } from "react-redux";
-import { loginStart } from "../../../actions/authActions";
-import { clearErrors } from "../../../actions/errorsActions";
+import { loginStart } from "../../actions/authActions";
+import { clearErrors } from "../../actions/errorsActions";
 
 class LoginModal extends Form {
   state = {

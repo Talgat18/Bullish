@@ -1,5 +1,5 @@
 import React from "react";
-import Links from "./Links";
+import Links from "./NavLinks";
 import { Collapse, Navbar, NavbarToggler, Nav, Container } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";

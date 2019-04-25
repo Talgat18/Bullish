@@ -1,6 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../../common/form";
+import Form from "../common/form";
 import {
   Modal,
   ModalHeader,
@@ -12,8 +12,8 @@ import {
 } from "reactstrap";
 import { connect } from "react-redux";
 
-import { registerStart } from "../../../actions/authActions";
-import { clearErrors } from "../../../actions/errorsActions";
+import { registerStart } from "../../actions/authActions";
+import { clearErrors } from "../../actions/errorsActions";
 
 class Register extends Form {
   state = {

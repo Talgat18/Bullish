@@ -40,8 +40,8 @@ const reducer = (state = initialState, action) => {
         isAuthenticated: true,
         refreshFailed: false
       };
-      case SIGNIN_FAILED:
-      case SIGNUP_FAILED:
+    case SIGNIN_FAILED:
+    case SIGNUP_FAILED:
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("name");
@@ -71,7 +71,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        refreshFailed: true,
+        refreshFailed: true
       };
     default:
       return state;

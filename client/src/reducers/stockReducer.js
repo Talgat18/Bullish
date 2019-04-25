@@ -6,12 +6,14 @@ import {
   GET_STOCK_LIST_SUCCEED
 } from "../constants/types";
 
+import { userIconURL } from "../constants/url";
+
 const initialState = {
   stocks: [],
   loading: false,
+  userIcon: userIconURL,
   balance: {
-    icon:
-      "https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png",
+    icon: userIconURL,
     name: "",
     stocks: [],
     balance: 0

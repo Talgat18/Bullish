@@ -36,7 +36,7 @@ class Renders extends Component {
 
   renderMyStocksTable() {
     const { length: count } = this.props.stock.balance.stocks;
-    const { balance } = this.props.stock;
+    const { balance, userIcon } = this.props.stock;
     const { pageSize, currentPage, sortColumn, searchQuery, type } = this.state;
 
     const data = getPaggedData(
@@ -53,7 +53,7 @@ class Renders extends Component {
           className="avatar-img mr-3"
           width="60"
           height="60"
-          src={balance.icon}
+          src={balance.icon || userIcon}
           alt="img"
         />
         <strong className="mr-3">

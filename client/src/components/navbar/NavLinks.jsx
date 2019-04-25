@@ -3,9 +3,9 @@ import React, { Component, Fragment } from "react";
 import { NavItem, Spinner } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
-import Logout from "./auth/Logout";
-import LoginModal from "./auth/LoginModal";
-import RegisterModal from "./auth/RegisterModal";
+import Logout from "../auth/Logout";
+import LoginModal from "../auth/LoginModal";
+import RegisterModal from "../auth/RegisterModal";
 
 class Links extends Component {
   renderGuestLinks() {
