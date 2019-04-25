@@ -1,23 +1,14 @@
-import React, { Component, Fragment } from "react";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  Nav,
-  NavItem,
-  Container,
-  Spinner
-} from "reactstrap";
+import React from "react";
+import Links from "./Links";
+import { Collapse, Navbar, NavbarToggler, Nav, Container } from "reactstrap";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import LoginModal from "./auth/LoginModal";
-import RegisterModal from "./auth/RegisterModal";
-import Logout from "./auth/Logout";
+
 import { getInfoStart, getStockList } from "../../actions/stockActions";
 import { getTransHistory } from "../../actions/historyActions";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-class AppNavbar extends Component {
+class AppNavbar extends Links {
   state = {
     isOpen: false
   };
@@ -41,47 +32,6 @@ class AppNavbar extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
-    const { balance, loading } = this.props.stock;
-
-    const spinner = <Spinner size="sm" type="grow" color="warning" />;
-    const authLinks = (
-      <Fragment>
-        <NavItem>
-          <span className="navbar-text mr-3">
-            <strong className="welcoming">
-              {" "}
-              {loading
-                ? spinner
-                : ` Welcome ${balance.name || localStorage.getItem("name")}`}
-            </strong>
-          </span>
-        </NavItem>
-        <NavItem>
-          <NavLink className="nav-item nav-link" to="/stocks">
-            Акции
-          </NavLink>{" "}
-        </NavItem>
-        <NavItem>
-          <NavLink className="nav-item nav-link" to="/balance">
-            Личный кабинет
-          </NavLink>{" "}
-        </NavItem>
-        <Logout />
-        <NavItem />
-      </Fragment>
-    );
-
-    const guestLinks = (
-      <Fragment>
-        <NavItem>
-          <RegisterModal />
-        </NavItem>
-        <NavItem>
-          <LoginModal />
-        </NavItem>
-      </Fragment>
-    );
-
     return (
       <div>
         <Navbar
@@ -97,7 +47,9 @@ class AppNavbar extends Component {
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
-                {isAuthenticated ? authLinks : guestLinks}
+                {isAuthenticated
+                  ? this.renderAuthLinks()
+                  : this.renderGuestLinks()}
               </Nav>
             </Collapse>
           </Container>

@@ -20,7 +20,7 @@ const getInfoFetchSucceed = data => ({
 });
 
 const getInfoFetchFailed = data => ({
-  type: GETINFO_FETCH_SUCCEEDED,
+  type: REFRESH_START,
   payload: data
 });
 

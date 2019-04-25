@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import PropTypes from "prop-types";
-import { Container, Spinner } from "reactstrap";
+import { Container } from "reactstrap";
 import { connect } from "react-redux";
 
 import { getPaggedData } from "../../utils/getPaggedData";
@@ -14,8 +14,9 @@ import SearchBox from "../common/searchBox";
 
 import { getInfoStart, sellingStock } from "../../actions/stockActions";
 import { getTransHistory } from "../../actions/historyActions";
+import Renders from "./common/renders";
 
-class Balance extends Component {
+class Balance extends Renders {
   static propTypes = {
     isAuthenticated: PropTypes.bool
   };
@@ -84,30 +85,6 @@ class Balance extends Component {
     };
     this.props.dispatch(sellingStock(data));
   };
-
-  renderLoader() {
-    return (
-      <Spinner
-        className="spinner-center"
-        type="grow"
-        style={{ width: "5rem", height: "5rem" }}
-        color="warning"
-      />
-    );
-  }
-
-  renderNoStocks() {
-    return (
-      <div>
-        <span className="navbar-text mr-3">You have no stocks!</span>
-        <span className="navbar-text mr-3">
-          <a href="/stocks" className="badge badge-info">
-            Buy some!
-          </a>
-        </span>
-      </div>
-    );
-  }
 
   render() {
     const { balance, loading } = this.props.stock;

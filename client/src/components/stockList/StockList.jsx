@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import AtomSpinner from ".././spinner/atom-spinner";
-import { Container } from "reactstrap";
+import { Container, Spinner } from "reactstrap";
 import { connect } from "react-redux";
 import {
   getInfoStart,
@@ -59,7 +58,6 @@ class StockList extends Component {
   };
 
   handleChart = id => {
-    console.log(id);
     this.props.dispatch(getStockHistory(id));
   };
 
@@ -84,7 +82,12 @@ class StockList extends Component {
     );
 
     const spinner = (
-      <AtomSpinner className="spinner-center" color="#000000" size={50} />
+      <Spinner
+        className="spinner-center"
+        type="grow"
+        style={{ width: "5rem", height: "5rem" }}
+        color="warning"
+      />
     );
 
     const stock_list = (
