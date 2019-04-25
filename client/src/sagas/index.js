@@ -37,6 +37,10 @@ import {
 import { getStockHistorySucceed } from "../actions/chartActions";
 import { getTransHistorySucceed } from "../actions/historyActions";
 
+import * as actions from '../actions/authActions'
+
+const { loginUser } = actions
+
 function* signUpSaga(action) {
   try {
     const tokens = yield call(signUp, action.payload);

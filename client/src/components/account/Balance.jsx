@@ -85,6 +85,30 @@ class Balance extends Component {
     this.props.dispatch(sellingStock(data));
   };
 
+  renderLoader() {
+    return (
+      <Spinner
+        className="spinner-center"
+        type="grow"
+        style={{ width: "5rem", height: "5rem" }}
+        color="warning"
+      />
+    );
+  }
+
+  renderNoStocks() {
+    return (
+      <div>
+        <span className="navbar-text mr-3">You have no stocks!</span>
+        <span className="navbar-text mr-3">
+          <a href="/stocks" className="badge badge-info">
+            Buy some!
+          </a>
+        </span>
+      </div>
+    );
+  }
+
   render() {
     const { balance, loading } = this.props.stock;
     const { items } = this.props.history;
@@ -122,7 +146,7 @@ class Balance extends Component {
     const myStockList = (
       <div className="row">
         <span className="navbar-text mr-3">
-          {balance ? ` Ваш баланс:  $${balance.balance}}` : " "}
+          {balance ? ` Ваш баланс:  $${balance.balance}` : " "}
         </span>{" "}
         <span className="navbar-text mr-3">
           <Link className="badge badge-info" to="/stocks">
@@ -148,7 +172,7 @@ class Balance extends Component {
 
     const historyList = (
       <div>
-        <strong className="navbar-text mt-5">{`История транзакций`}</strong>{" "}
+        <strong className="navbar-text mt-5">История транзакций</strong>{" "}
         <SearchBox
           value={searchQueryHistory}
           onChange={this.handleSearchHistory}
@@ -167,28 +191,13 @@ class Balance extends Component {
       </div>
     );
 
-    const loader = (
-      <Spinner
-        className="spinner-center"
-        type="grow"
-        style={{ width: "5rem", height: "5rem" }}
-        color="warning"
-      />
-    );
-
-    const noStocks = (
-      <div>
-        <span className="navbar-text mr-3">You have no stocks!</span>
-        <span className="navbar-text mr-3">
-          <a href="/stocks" className="badge badge-info">
-            Buy some!
-          </a>
-        </span>
-      </div>
-    );
     return (
       <Container style={{ color: "#2f3640" }}>
-        {loading ? loader : count === 0 ? noStocks : myStockList}
+        {loading
+          ? this.renderLoader()
+          : count === 0
+          ? this.renderNoStocks()
+          : myStockList}
         {historyList}
       </Container>
     );

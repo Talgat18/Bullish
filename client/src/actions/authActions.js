@@ -9,6 +9,32 @@ import {
   REFRESH_SUCCEED
 } from "../constants/types";
 
+
+const REQUEST = 'REQUEST'
+const SUCCESS = 'SUCCESS'
+const FAILURE = 'FAILURE'
+
+function createRequestTypes(base) {
+  return [REQUEST, SUCCESS, FAILURE].reduce((acc, type) => {
+		acc[type] = `${base}_${type}`
+		return acc
+	}, {})
+}
+
+export const LOGIN = createRequestTypes('LOGIN')
+export const REGISTER = createRequestTypes('REGISTER')
+
+
+function action(type, payload = {}) {
+  return {type, ...payload}
+}
+
+export const loginUser = {
+  request: login => action(LOGIN[REQUEST], {login}),
+  success: (login, response) => action(LOGIN[SUCCESS], {login, response}),
+  failure: (login, error) => action(LOGIN[FAILURE], {login, error}),
+}
+
 const loginStart = user => ({
   type: SIGNIN_START,
   payload: user

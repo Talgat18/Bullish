@@ -1,13 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
+import Joi from "joi-browser";
+import Form from "../../common/form";
 import {
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
-  Form,
   FormGroup,
-  Label,
-  Input,
   NavLink,
   Alert,
   Spinner
@@ -15,12 +13,25 @@ import {
 import { connect } from "react-redux";
 import { loginStart } from "../../../actions/authActions";
 
-class LoginModal extends Component {
+class LoginModal extends Form {
   state = {
     modal: false,
-    login: "",
-    password: "",
-    msg: null
+    msg: null,
+    data: {
+      login: "",
+      password: ""
+    },
+    errors: {}
+  };
+
+  schema = {
+    login: Joi.string()
+      .required()
+      .label("Login"),
+    password: Joi.string()
+      .required()
+      .min(5)
+      .label("Password")
   };
 
   componentDidUpdate(prevProps) {
@@ -47,14 +58,8 @@ class LoginModal extends Component {
     });
   };
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { login, password } = this.state;
+  doSubmit = () => {
+    const { login, password } = this.state.data;
     const user = {
       login,
       password
@@ -64,6 +69,7 @@ class LoginModal extends Component {
   };
 
   render() {
+    const { msg, modal } = this.state;
     const { isLoading } = this.props.auth;
     const spinner = <Spinner type="grow" color="warning" />;
     return (
@@ -71,46 +77,20 @@ class LoginModal extends Component {
         <NavLink onClick={this.toggle} href="#">
           Login
         </NavLink>
-
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal isOpen={modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
             Login {"          "}
             {isLoading ? spinner : " "}
           </ModalHeader>
           <ModalBody>
-            {this.state.msg ? (
-              <Alert color="danger">{this.state.msg}</Alert>
-            ) : null}
-            <Form onSubmit={this.onSubmit}>
+            {msg ? <Alert color="danger">{msg}</Alert> : null}
+            <form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="item">Login</Label>
-                <Input
-                  type="login"
-                  name="login"
-                  id="login"
-                  placeholder="Login"
-                  className="mb-3"
-                  onChange={this.onChange}
-                />
-                <Label for="item">Password</Label>
-                <Input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Password"
-                  className="mb-3"
-                  onChange={this.onChange}
-                />
-                <Button
-                  disabled={isLoading}
-                  color="dark"
-                  style={{ marginTop: "2rem" }}
-                  block
-                >
-                  Login
-                </Button>
+                {this.renderInput("login", "Login")}
+                {this.renderInput("password", "Password", "password")}
+                {this.renderButton("Login")}
               </FormGroup>
-            </Form>
+            </form>
           </ModalBody>
         </Modal>
       </div>
@@ -124,7 +104,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(LoginModal);
+export default connect(mapStateToProps)(LoginModal);

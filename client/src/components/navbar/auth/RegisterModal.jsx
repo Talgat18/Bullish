@@ -1,13 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
+import Joi from "joi-browser";
+import Form from "../../common/form";
 import {
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
-  Form,
   FormGroup,
-  Label,
-  Input,
   NavLink,
   Alert,
   Spinner
@@ -16,12 +14,25 @@ import { connect } from "react-redux";
 
 import { registerStart } from "../../../actions/authActions";
 
-class Register extends Component {
+class Register extends Form {
   state = {
     modal: false,
-    login: "",
-    password: "",
-    msg: null
+    msg: null,
+    data: {
+      login: "",
+      password: ""
+    },
+    errors: {}
+  };
+
+  schema = {
+    login: Joi.string()
+      .required()
+      .label("Yo"),
+    password: Joi.string()
+      .required()
+      .min(5)
+      .label("Password")
   };
 
   componentDidUpdate(prevProps) {
@@ -47,24 +58,18 @@ class Register extends Component {
     });
   };
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-
-    const { name, login, password } = this.state;
-    const newUser = {
-      name,
+  doSubmit = () => {
+    const { login, password } = this.state.data;
+    const user = {
       login,
       password
     };
-    this.props.dispatch(registerStart(newUser));
+    this.props.dispatch(registerStart(user));
     this.toggle();
   };
 
   render() {
+    const { msg, modal } = this.state;
     const { isLoading } = this.props.auth;
     const spinner = <Spinner type="grow" color="warning" />;
     return (
@@ -72,41 +77,20 @@ class Register extends Component {
         <NavLink onClick={this.toggle} href="#">
           Register
         </NavLink>
-
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
+        <Modal isOpen={modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
-            Register{"          "}
+            Register {"          "}
             {isLoading ? spinner : " "}
           </ModalHeader>
           <ModalBody>
-            {this.state.msg ? (
-              <Alert color="danger">{this.state.msg}</Alert>
-            ) : null}
-            <Form onSubmit={this.onSubmit}>
+            {msg ? <Alert color="danger">{msg}</Alert> : null}
+            <form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="item">Login</Label>
-                <Input
-                  type="login"
-                  name="login"
-                  id="login"
-                  placeholder="Login"
-                  className="mb-3"
-                  onChange={this.onChange}
-                />
-                <Label for="item">Password</Label>
-                <Input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Password"
-                  className="mb-3"
-                  onChange={this.onChange}
-                />
-                <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  Register
-                </Button>
+                {this.renderInput("login", "Login")}
+                {this.renderInput("password", "Password", "password")}
+                {this.renderButton("Register")}
               </FormGroup>
-            </Form>
+            </form>
           </ModalBody>
         </Modal>
       </div>
@@ -120,7 +104,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(
-  mapStateToProps,
-  null
-)(Register);
+export default connect(mapStateToProps)(Register);

@@ -1,5 +1,5 @@
 export default function getStockList(accessToken) {
-  return fetch("https://stockstore.herokuapp.com/api/stocks", {
+  return fetch("https://stockstore.herokuapp.com/api/stocks?count=30", {
     method: "GET",
     headers: new Headers({
       Authorization: accessToken
