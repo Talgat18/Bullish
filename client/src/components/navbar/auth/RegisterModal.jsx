@@ -23,7 +23,8 @@ class Register extends Form {
       name: "",
       login: "",
       password: "",
-      icon: ""
+      icon:
+        "https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
     },
     errors: {}
   };
@@ -34,7 +35,7 @@ class Register extends Form {
       .label("Name"),
     icon: Joi.string()
       .required()
-      .label("Icon"),
+      .label("Profile Icon"),
     login: Joi.string()
       .required()
       .label("Login"),
@@ -98,7 +99,7 @@ class Register extends Form {
             <form onSubmit={this.onSubmit}>
               <FormGroup>
                 {this.renderInput("name", "Name")}
-                {this.renderInput("icon", "Icon")}
+                {this.renderInput("icon", "Profile Icon")}
                 {this.renderInput("login", "Login")}
                 {this.renderInput("password", "Password", "password")}
                 {this.renderButton("Register")}

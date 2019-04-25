@@ -10,7 +10,8 @@ const initialState = {
   stocks: [],
   loading: false,
   balance: {
-    icon: "",
+    icon:
+      "https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png",
     name: "",
     stocks: [],
     balance: 0
