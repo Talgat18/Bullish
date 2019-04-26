@@ -8,23 +8,23 @@ class Chart extends Component {
     super(props);
     this.state = {
       opacity: 1,
-        anyData: {
-          displayTitle: true,
-          displayLegend: true,
-          legendPosition: "right",
-          location: "City"
-        },
-        price: [],
-        chartData: {
-          labels: this.props.chart.date,
-          datasets: [
-            {
-              label: "USD",
-              data: this.props.chart.data,
-              backgroundColor: ["#689F38"]
-            }
-          ]
-        }
+      anyData: {
+        displayTitle: true,
+        displayLegend: true,
+        legendPosition: "right",
+        location: "City"
+      },
+      price: [],
+      chartData: {
+        labels: this.props.chart.date,
+        datasets: [
+          {
+            label: "USD",
+            data: this.props.chart.data,
+            backgroundColor: ["#689F38"]
+          }
+        ]
+      }
     };
   }
 

@@ -4,7 +4,6 @@ import AppNavbar from "./components/navbar/AppNavbar";
 import Home from "./components/routes/Home";
 import Buy from "./components/routes/Buy";
 import Balance from "./components/routes/BalanceR";
-import Test from "./components/routes/Test";
 import NotFound from "./components/routes/NotFound";
 
 import { Provider } from "react-redux";
@@ -25,7 +24,6 @@ class App extends Component {
             <Route path="/home" component={Home} />
             <Route path="/balance" component={Balance} />
             <Route path="/not-found" component={NotFound} />
-            <Route path="/test" component={Test} />
             <Redirect from="/" exact to="/home" />
             <Redirect to="/not-found" />
           </Switch>
