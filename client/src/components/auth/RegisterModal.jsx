@@ -33,9 +33,7 @@ class Register extends Form {
     name: Joi.string()
       .required()
       .label("Name"),
-    icon: Joi.string()
-      .required()
-      .label("Profile Icon"),
+    icon: Joi.string().label("Profile Icon"),
     login: Joi.string()
       .required()
       .label("Login"),

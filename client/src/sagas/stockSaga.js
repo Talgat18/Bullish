@@ -75,9 +75,7 @@ function* gettingStockHistorySaga(action) {
       action.payload.range,
       token
     );
-    console.log(data);
     const res = sortStockHistory(data);
-    console.log(res);
     yield put(getStockHistorySucceed(res));
   } catch (e) {
     yield put({ type: "GETTING_STOCK_HISTORY_FAILED", message: e.message });
