@@ -48,6 +48,7 @@ class Chart extends Component {
         labels: this.props.chart.date,
         datasets: [
           {
+            label: "USD",
             data: this.props.chart.data
           }
         ]

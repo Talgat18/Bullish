@@ -7,7 +7,8 @@ const initialState = {
   chartData: {
     datasets: {
       label: "USD",
-      data: [100, 200]
+      data: [100, 200],
+      backgroundColor: ["#689F38"]
     }
   }
 };
