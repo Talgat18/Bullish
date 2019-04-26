@@ -1,10 +1,10 @@
 import {
-  SIGNUP_FETCH_SUCCEEDED,
+  SIGNUP_SUCCEED,
   SIGNUP_START,
   SIGNUP_FAILED,
   SIGNIN_START,
   SIGNIN_FAILED,
-  SIGNIN_FETCH_SUCCEEDED,
+  SIGNIN_SUCCEED,
   LOGOUT,
   CHECK_USER,
   REFRESH_START,
@@ -45,7 +45,7 @@ const loginStart = user => ({
 });
 
 const loginFetchSucceed = tokens => ({
-  type: SIGNIN_FETCH_SUCCEEDED,
+  type: SIGNIN_SUCCEED,
   payload: tokens
 });
 
@@ -59,7 +59,7 @@ const registerStart = user => ({
 });
 
 const registerFetchSucceed = tokens => ({
-  type: SIGNUP_FETCH_SUCCEEDED,
+  type: SIGNUP_SUCCEED,
   payload: tokens
 });
 

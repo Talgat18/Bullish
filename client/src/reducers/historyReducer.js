@@ -1,4 +1,4 @@
-import { GET_TRANS_HISTORY_SUCCEEDED } from "../constants/types";
+import { GET_TRANS_HISTORY_SUCCEED } from "../constants/types";
 
 const initialState = {
   items: []
@@ -6,7 +6,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_TRANS_HISTORY_SUCCEEDED:
+    case GET_TRANS_HISTORY_SUCCEED:
       return {
         ...state,
         items: action.payload.items

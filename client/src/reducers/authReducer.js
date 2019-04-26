@@ -1,8 +1,8 @@
 import {
-  SIGNUP_FETCH_SUCCEEDED,
+  SIGNUP_SUCCEED,
   SIGNUP_START,
   SIGNIN_START,
-  SIGNIN_FETCH_SUCCEEDED,
+  SIGNIN_SUCCEED,
   LOGOUT,
   REFRESH_SUCCEED,
   REFRESH_FAILED,
@@ -31,8 +31,8 @@ const reducer = (state = initialState, action) => {
         isLoading: true,
         name: action.payload.login
       };
-    case SIGNUP_FETCH_SUCCEEDED:
-    case SIGNIN_FETCH_SUCCEEDED:
+    case SIGNUP_SUCCEED:
+    case SIGNIN_SUCCEED:
       return {
         ...state,
         isLoading: false,

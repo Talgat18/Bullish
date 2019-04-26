@@ -1,18 +1,5 @@
-import { API_ROOT } from "../constants/url";
+import callApi from "./callApi";
 
-function callApi(endpoint, method, headers, body) {
-  const fullUrl =
-    endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
-
-  return fetch(fullUrl, {
-    method,
-    mode: "cors",
-    headers,
-    body: JSON.stringify(body)
-  }).then(data => data.json());
-}
-
-// api services
 export const fetchSignIn = user =>
   callApi(
     `/api/auth/signin`,

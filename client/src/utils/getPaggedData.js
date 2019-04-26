@@ -9,15 +9,14 @@ export function getPaggedData(
   currentPage,
   sortColumn,
   searchQuery,
-  type = 'stocks'
+  type = "stocks"
 ) {
   let filtered = items;
 
   if (searchQuery) filtered = searchStock(items, searchQuery, type);
 
   const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
   const data = paginate(sorted, currentPage, pageSize);
-  console.log(data);
+
   return data;
 }

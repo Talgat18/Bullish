@@ -1,6 +1,6 @@
 import {
   GETINFO_START,
-  GETINFO_FETCH_SUCCEEDED,
+  GETINFO_SUCCEED,
   REFRESH_START,
   GET_STOCK_LIST,
   GET_STOCK_LIST_SUCCEED,
@@ -15,7 +15,7 @@ const getInfoStart = () => ({
 });
 
 const getInfoFetchSucceed = data => ({
-  type: GETINFO_FETCH_SUCCEEDED,
+  type: GETINFO_SUCCEED,
   payload: data
 });
 

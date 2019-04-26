@@ -1,6 +1,6 @@
 import {
   GET_TRANS_HISTORY,
-  GET_TRANS_HISTORY_SUCCEEDED
+  GET_TRANS_HISTORY_SUCCEED
 } from "../constants/types";
 
 const getTransHistory = () => ({
@@ -8,7 +8,7 @@ const getTransHistory = () => ({
 });
 
 const getTransHistorySucceed = data => ({
-  type: GET_TRANS_HISTORY_SUCCEEDED,
+  type: GET_TRANS_HISTORY_SUCCEED,
   payload: data
 });
 

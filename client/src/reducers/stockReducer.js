@@ -1,6 +1,6 @@
 import {
   GETINFO_START,
-  GETINFO_FETCH_SUCCEEDED,
+  GETINFO_SUCCEED,
   GETINFO_FAILED,
   GET_STOCK_LIST,
   GET_STOCK_LIST_SUCCEED
@@ -24,7 +24,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GETINFO_START:
       return { ...state, loading: true };
-    case GETINFO_FETCH_SUCCEEDED:
+    case GETINFO_SUCCEED:
       return {
         ...state,
         balance: action.payload,
@@ -40,7 +40,6 @@ export default function(state = initialState, action) {
         loading: true
       };
     case GET_STOCK_LIST_SUCCEED:
-      console.log(action.payload.items);
       return {
         ...state,
         stocks: action.payload.items,
