@@ -12,16 +12,30 @@ class Chart extends Component {
         displayTitle: true,
         displayLegend: true,
         legendPosition: "right",
-        location: "City"
+        text: "someStock"
       },
-      price: [],
       chartData: {
         labels: this.props.chart.date,
         datasets: [
           {
             label: "USD",
+            fill: false,
             data: this.props.chart.data,
-            backgroundColor: ["#689F38"]
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "#fff",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "rgba(75,192,192,1)",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10
           }
         ]
       }
@@ -34,9 +48,7 @@ class Chart extends Component {
         labels: this.props.chart.date,
         datasets: [
           {
-            label: "USD",
-            data: this.props.chart.data,
-            backgroundColor: ["#689F38"]
+            data: this.props.chart.data
           }
         ]
       }
@@ -53,8 +65,8 @@ class Chart extends Component {
           options={{
             title: {
               display: this.state.anyData.displayTitle,
-              text: "Largest Cities In " + this.state.anyData.location,
-              fontSize: 1
+              text: this.state.anyData.text,
+              fontSize: 13
             },
             legend: {
               display: this.state.anyData.displayLegend,

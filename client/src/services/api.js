@@ -64,7 +64,7 @@ export const fetchSelling = (data, accessToken) =>
     data
   );
 
-export const fetchStockHistory = (id, accessToken) =>
-  callApi(`/api/stocks/${id}/history`, "GET", {
+export const fetchStockHistory = (id, range, accessToken) =>
+  callApi(`/api/stocks/${id}/history?range=${range}`, "GET", {
     Authorization: accessToken
   });

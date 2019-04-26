@@ -56,7 +56,8 @@ class StockList extends RenderStockList {
   };
 
   handleChart = id => {
-    this.props.dispatch(getStockHistory(id));
+    let range = "month";
+    this.props.dispatch(getStockHistory(id, range));
   };
 
   handleSort = sortColumn => {
@@ -98,7 +99,7 @@ class StockList extends RenderStockList {
 
 const mapStateToProps = state => ({
   stock: state.stock,
-  isAuthenticated: state.auth.isAuthenticated,
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps)(StockList);

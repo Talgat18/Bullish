@@ -1,8 +1,8 @@
 import { GOT_STOCK_HISTORY_START, GOT_STOCK_HISTORY } from "../constants/types";
 
-const getStockHistory = id => ({
+const getStockHistory = (id, range) => ({
   type: GOT_STOCK_HISTORY_START,
-  payload: id
+  payload: { id, range }
 });
 
 const getStockHistorySucceed = data => ({

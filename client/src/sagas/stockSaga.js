@@ -69,8 +69,15 @@ function* gettingStockHistorySaga(action) {
   const token = yield select(getAccessToken);
 
   try {
-    const data = yield call(api.fetchStockHistory, action.payload, token);
+    const data = yield call(
+      api.fetchStockHistory,
+      action.payload.id,
+      action.payload.range,
+      token
+    );
+    console.log(data);
     const res = sortStockHistory(data);
+    console.log(res);
     yield put(getStockHistorySucceed(res));
   } catch (e) {
     yield put({ type: "GETTING_STOCK_HISTORY_FAILED", message: e.message });
