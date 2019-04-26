@@ -25,6 +25,7 @@ function createRequestTypes(base) {
 
 export const LOGIN = createRequestTypes("LOGIN");
 export const REGISTER = createRequestTypes("REGISTER");
+export const STOCK_LIST = createRequestTypes("STOCK_LIST");
 
 function action(type, payload = {}) {
   return { type, ...payload };
@@ -35,6 +36,8 @@ export const loginUser = {
   success: (login, response) => action(LOGIN[SUCCESS], { login, response }),
   failure: (login, error) => action(LOGIN[FAILURE], { login, error })
 };
+
+
 
 const loginStart = user => ({
   type: SIGNIN_START,

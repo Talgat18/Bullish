@@ -1,19 +1,13 @@
 import { call, put, takeEvery, select } from "redux-saga/effects";
 import { getRefreshToken } from "../selectors/selectors";
-import { SIGNUP_START, SIGNIN_START, REFRESH_START } from "../constants/types";
-import signUp from "../api/auth/signUp";
-import login from "../api/auth/signIn";
-import refresh from "../api//auth/refresh";
+import * as type from "../constants/types";
 import * as authActions from "../actions/authActions";
+import * as api from "../services/api";
 import { returnErrors } from "../actions/errorsActions";
-
-// import * as actions from "../actions/authActions";
-
-// const { loginUser } = actions;
 
 function* signUpSaga(action) {
   try {
-    const data = yield call(signUp, action.payload);
+    const data = yield call(api.fetchSignUp, action.payload);
 
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("refreshToken", data.refreshToken);
@@ -29,9 +23,10 @@ function* signUpSaga(action) {
   }
 }
 
-function* signIn(action) {
+function* signInSaga(action) {
   try {
-    const data = yield call(login, action.payload);
+    const data = yield call(api.fetchSignIn, action.payload);
+
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("refreshToken", data.refreshToken);
 
@@ -49,7 +44,7 @@ function* signIn(action) {
 function* refreshSaga() {
   const refreshToken = yield select(getRefreshToken);
   try {
-    const data = yield call(refresh, refreshToken);
+    const data = yield call(api.fetchRefresh, refreshToken);
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("refreshToken", data.refreshToken);
 
@@ -62,9 +57,9 @@ function* refreshSaga() {
 }
 
 function* mySaga() {
-  yield takeEvery(SIGNUP_START, signUpSaga);
-  yield takeEvery(SIGNIN_START, signIn);
-  yield takeEvery(REFRESH_START, refreshSaga);
+  yield takeEvery(type.SIGNUP_START, signUpSaga);
+  yield takeEvery(type.SIGNIN_START, signInSaga);
+  yield takeEvery(type.REFRESH_START, refreshSaga);
 }
 
 export default mySaga;
