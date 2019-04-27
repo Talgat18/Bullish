@@ -2,7 +2,7 @@ import { call, put, takeEvery, select } from "redux-saga/effects";
 import { getRefreshToken } from "../selectors/selectors";
 import * as type from "../constants/types";
 import * as authActions from "../actions/authActions";
-import * as api from "../services/api";
+import * as api from "../services/authApi";
 import { returnErrors } from "../actions/errorsActions";
 
 function* signUpSaga(action) {

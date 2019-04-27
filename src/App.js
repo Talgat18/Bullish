@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import AppNavbar from "./components/navbar/AppNavbar";
 import Home from "./components/routes/Home";
-import Buy from "./components/routes/Buy";
+import Stocks from "./components/routes/Stocks";
 import Balance from "./components/routes/BalanceR";
 import NotFound from "./components/routes/NotFound";
 
@@ -20,7 +20,7 @@ class App extends Component {
         <React.Fragment>
           <AppNavbar />
           <Switch>
-            <Route path="/stocks" component={Buy} />
+            <Route path="/stocks" component={Stocks} />
             <Route path="/home" component={Home} />
             <Route path="/balance" component={Balance} />
             <Route path="/not-found" component={NotFound} />

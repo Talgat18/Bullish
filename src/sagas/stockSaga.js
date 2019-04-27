@@ -7,7 +7,7 @@ import {
 import { sortStockHistory } from "../utils/sortStockHistory";
 import * as type from "../constants/types";
 import * as stockActions from "../actions/stockActions";
-import * as api from "../services/api";
+import * as api from "../services/stockApi";
 import { getStockHistorySucceed } from "../actions/chartActions";
 import { getTransHistorySucceed } from "../actions/historyActions";
 

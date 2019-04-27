@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Chart from "../chart/Chart";
-import DnD from "../dndTest/index";
+import DnD from "../dnd/index";
 import StockList from "../stockList/StockList";
 
 class Buy extends Component {
