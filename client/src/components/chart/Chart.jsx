@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Line } from "react-chartjs-2";
-//import { getStockHistory } from "../actions/stockActions";
+import { getStockHistory } from "../../actions/chartActions";
 
 class Chart extends Component {
   constructor(props) {
     super(props);
+    const { chart, index } = this.props;
     this.state = {
       opacity: 1,
       anyData: {
@@ -15,12 +16,12 @@ class Chart extends Component {
         text: "someStock"
       },
       chartData: {
-        labels: this.props.chart.date,
+        labels: chart.date[index],
         datasets: [
           {
             label: "USD",
             fill: false,
-            data: this.props.chart.data,
+            data: chart.data[index],
             backgroundColor: "rgba(75,192,192,0.4)",
             borderColor: "rgba(75,192,192,1)",
             borderCapStyle: "butt",
@@ -43,35 +44,47 @@ class Chart extends Component {
   }
 
   componentWillReceiveProps() {
+    const { chart, index } = this.props;
     this.setState({
       chartData: {
-        labels: this.props.chart.date,
+        labels: chart.date[index],
         datasets: [
           {
             label: "USD",
-            data: this.props.chart.data
+            data: chart.data[index]
           }
         ]
       }
     });
   }
 
+  componentDidMount() {
+    this.handleData();
+  }
+
+  handleData = () => {
+    const { id } = this.props;
+    let range = "month";
+    this.props.dispatch(getStockHistory(id, range));
+  };
+
   render() {
+    const { anyData, chartData } = this.state;
     return (
-      <div className="chart-container" style={{ opacity: this.state.opacity }}>
+      <div className="chart-container">
         <Line
           width={15}
           height={7}
-          data={this.state.chartData}
+          data={chartData}
           options={{
             title: {
-              display: this.state.anyData.displayTitle,
-              text: this.state.anyData.text,
+              display: anyData.displayTitle,
+              text: anyData.text,
               fontSize: 13
             },
             legend: {
-              display: this.state.anyData.displayLegend,
-              position: this.state.anyData.legendPosition
+              display: anyData.displayLegend,
+              position: anyData.legendPosition
             }
           }}
         />

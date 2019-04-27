@@ -1,5 +1,9 @@
 import { call, put, takeEvery, select } from "redux-saga/effects";
-import { getAccessToken } from "../selectors/selectors";
+import {
+  getAccessToken,
+  getChartDate,
+  getChartPrice
+} from "../selectors/selectors";
 import { sortStockHistory } from "../utils/sortStockHistory";
 import * as type from "../constants/types";
 import * as stockActions from "../actions/stockActions";
@@ -67,6 +71,8 @@ function* sellingStockSaga(action) {
 
 function* gettingStockHistorySaga(action) {
   const token = yield select(getAccessToken);
+  const date = yield select(getChartDate);
+  const price = yield select(getChartPrice);
 
   try {
     const data = yield call(
@@ -76,7 +82,10 @@ function* gettingStockHistorySaga(action) {
       token
     );
     const res = sortStockHistory(data);
-    yield put(getStockHistorySucceed(res));
+
+    date.push(res.date);
+    price.push(res.price);
+    yield put(getStockHistorySucceed(date, price));
   } catch (e) {
     yield put({ type: "GETTING_STOCK_HISTORY_FAILED", message: e.message });
   }

@@ -9,11 +9,8 @@ import RegisterModal from "../auth/RegisterModal";
 
 class Links extends Component {
   renderGuestLinks() {
-
     return (
       <Fragment>
-       
-
         <NavItem>
           <RegisterModal />
         </NavItem>

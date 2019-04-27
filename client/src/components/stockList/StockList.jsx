@@ -7,8 +7,7 @@ import {
   getStockList,
   buyingStock
 } from "../../actions/stockActions";
-import { getStockHistory } from "../../actions/chartActions";
-
+import { addChart } from "../../actions/widgetActions";
 import RenderStockList from "./renderStockList";
 
 class StockList extends RenderStockList {
@@ -22,8 +21,7 @@ class StockList extends RenderStockList {
       sortColumn: {
         path: "name",
         order: "asc"
-      },
-      stockz: this.props.stock.stockz
+      }
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -56,8 +54,9 @@ class StockList extends RenderStockList {
   };
 
   handleChart = id => {
-    let range = "month";
-    this.props.dispatch(getStockHistory(id, range));
+    const list = this.props.widget.chartList;
+    list.push(id);
+    this.props.dispatch(addChart(list));
   };
 
   handleSort = sortColumn => {
@@ -99,7 +98,8 @@ class StockList extends RenderStockList {
 
 const mapStateToProps = state => ({
   stock: state.stock,
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  widget: state.widget
 });
 
 export default connect(mapStateToProps)(StockList);

@@ -3,13 +3,11 @@ import {
   GET_TRANS_HISTORY_SUCCEED
 } from "../constants/types";
 
-const getTransHistory = () => ({
+export const getTransHistory = () => ({
   type: GET_TRANS_HISTORY
 });
 
-const getTransHistorySucceed = data => ({
+export const getTransHistorySucceed = data => ({
   type: GET_TRANS_HISTORY_SUCCEED,
   payload: data
 });
-
-export { getTransHistory, getTransHistorySucceed };

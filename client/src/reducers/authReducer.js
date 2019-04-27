@@ -71,7 +71,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        refreshFailed: true
+        refreshFailed: true,
+        isAuthenticated: false
       };
     default:
       return state;

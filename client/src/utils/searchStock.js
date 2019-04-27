@@ -1,4 +1,4 @@
-export function searchStock(items, searchQuery, type) {
+export function searchStock(items, searchQuery, type = "stocks") {
   let filtered = items;
   if (type === "history") {
     filtered = items.filter(m =>

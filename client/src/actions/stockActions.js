@@ -10,55 +10,44 @@ import {
   SOLD_STOCK
 } from "../constants/types";
 
-const getInfoStart = () => ({
+export const getInfoStart = () => ({
   type: GETINFO_START
 });
 
-const getInfoFetchSucceed = data => ({
+export const getInfoFetchSucceed = data => ({
   type: GETINFO_SUCCEED,
   payload: data
 });
 
-const getInfoFetchFailed = () => ({
+export const getInfoFetchFailed = () => ({
   type: REFRESH_START
 });
 
-const getStockList = () => ({
+export const getStockList = () => ({
   type: GET_STOCK_LIST
 });
-const getStockListSucceed = data => ({
+export const getStockListSucceed = data => ({
   type: GET_STOCK_LIST_SUCCEED,
   payload: data
 });
 
-const buyingStock = data => ({
+export const buyingStock = data => ({
   type: BUYING_STOCK,
   payload: data
 });
 
-const boughtStock = data => ({
+export const boughtStock = data => ({
   type: BOUGHT_STOCK,
   payload: data
 });
 
-const sellingStock = data => ({
+export const sellingStock = data => ({
   type: SELLING_STOCK,
   payload: data
 });
 
-const soldStock = data => ({
+export const soldStock = data => ({
   type: SOLD_STOCK,
   payload: data
 });
 
-export {
-  getInfoStart,
-  getInfoFetchSucceed,
-  getInfoFetchFailed,
-  getStockList,
-  getStockListSucceed,
-  buyingStock,
-  boughtStock,
-  sellingStock,
-  soldStock
-};

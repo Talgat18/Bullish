@@ -1,76 +1,50 @@
-import {
-  SIGNUP_SUCCEED,
-  SIGNUP_START,
-  SIGNUP_FAILED,
-  SIGNIN_START,
-  SIGNIN_FAILED,
-  SIGNIN_SUCCEED,
-  LOGOUT,
-  CHECK_USER,
-  REFRESH_START,
-  REFRESH_SUCCEED,
-  REFRESH_FAILED
-} from "../constants/types";
+import * as actionTypes from "../constants/types";
 
-const loginStart = user => ({
-  type: SIGNIN_START,
+export const loginStart = user => ({
+  type: actionTypes.SIGNIN_START,
   payload: user
 });
 
-const loginFetchSucceed = tokens => ({
-  type: SIGNIN_SUCCEED,
+export const loginFetchSucceed = tokens => ({
+  type: actionTypes.SIGNIN_SUCCEED,
   payload: tokens
 });
 
-const loginFail = () => ({
-  type: SIGNIN_FAILED
+export const loginFail = () => ({
+  type: actionTypes.SIGNIN_FAILED
 });
 
-const registerStart = user => ({
-  type: SIGNUP_START,
+export const registerStart = user => ({
+  type: actionTypes.SIGNUP_START,
   payload: user
 });
 
-const registerFetchSucceed = tokens => ({
-  type: SIGNUP_SUCCEED,
+export const registerFetchSucceed = tokens => ({
+  type: actionTypes.SIGNUP_SUCCEED,
   payload: tokens
 });
 
-const registerFail = () => ({
-  type: SIGNUP_FAILED
+export const registerFail = () => ({
+  type: actionTypes.SIGNUP_FAILED
 });
 
-const refreshStart = () => ({
-  type: REFRESH_START
+export const refreshStart = () => ({
+  type: actionTypes.REFRESH_START
 });
 
-const refreshSucceed = tokens => ({
-  type: REFRESH_SUCCEED,
+export const refreshSucceed = tokens => ({
+  type: actionTypes.REFRESH_SUCCEED,
   payload: tokens
 });
 
-const refreshFailed = () => ({
-  type: REFRESH_FAILED
+export const refreshFailed = () => ({
+  type: actionTypes.REFRESH_FAILED
 });
 
-const logout = () => ({
-  type: LOGOUT
+export const logout = () => ({
+  type: actionTypes.LOGOUT
 });
 
-const checkUser = () => ({
-  type: CHECK_USER
+export const checkUser = () => ({
+  type: actionTypes.CHECK_USER
 });
-
-export {
-  loginStart,
-  loginFetchSucceed,
-  registerStart,
-  registerFetchSucceed,
-  logout,
-  checkUser,
-  refreshStart,
-  refreshSucceed,
-  refreshFailed,
-  loginFail,
-  registerFail
-};
