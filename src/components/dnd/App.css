@@ -1,0 +1,38 @@
+.name {
+  width: 650px;
+  text-align: center;
+  background: #f1c40f;
+  padding: 1px 10px;
+  font-weight: bold;
+  position: relative;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.content {
+  height: auto;
+  box-shadow: 0px 0px 10px #000000b3;
+  position: absolute;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+.closeButton {
+  background: #f00a0a;
+  margin-right: 25px;
+  margin-bottom: 15px;
+  color: #fff;
+  align-self: center;
+}
+
+.fa-trash {
+  transition: 0.5s;
+}
+
+.closeButton:hover .fa-trash {
+  color: #f00a0a;
+}
