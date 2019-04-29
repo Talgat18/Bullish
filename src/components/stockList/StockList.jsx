@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Spinner } from "reactstrap";
+import { Container, Spinner, Alert } from "reactstrap";
 import { connect } from "react-redux";
 import {
   getInfoStart,
@@ -15,6 +15,9 @@ class StockList extends RenderStockList {
     super(props);
     this.state = {
       modal: false,
+      alert: false,
+      alertType: "success",
+      alertText: "Success!",
       pageSize: 5,
       currentPage: 1,
       searchQuery: "",
@@ -35,6 +38,7 @@ class StockList extends RenderStockList {
   componentWillMount() {
     this.props.dispatch(getStockList());
     this.props.dispatch(getInfoStart());
+    this.setState({ balance: this.props.stock.balance.balance });
   }
 
   refreshingToken = () => {
@@ -45,12 +49,28 @@ class StockList extends RenderStockList {
     this.setState({ searchQuery: query, currentPage: 1 });
   };
 
-  handleBuy = (amount, stockId) => {
+  handleBuy = (amount, stockId, price) => {
+    const { balance } = this.props.stock;
     const data = {
       stockId,
       amount
     };
-    this.props.dispatch(buyingStock(data));
+    if (balance.balance - price * amount > 0) {
+      balance.balance = balance.balance - price * amount;
+      this.setState({
+        balance: balance.balance,
+        alert: true,
+        alertType: "success",
+        alertText: "Success!"
+      });
+      this.props.dispatch(buyingStock(data));
+    } else {
+      this.setState({
+        alertType: "danger",
+        alert: true,
+        alertText: "Недостаточно средств!"
+      });
+    }
   };
 
   handleChart = id => {
@@ -78,8 +98,22 @@ class StockList extends RenderStockList {
     );
   }
 
+  renderAlert = () => {
+    const { alertType, alertText } = this.state;
+    return (
+      <Alert onClick={this.handleAlert} color={alertType}>
+        {alertText}
+      </Alert>
+    );
+  };
+
+  handleAlert = () => {
+    this.setState({ alert: false });
+  };
+
   render() {
     const { balance, loading } = this.props.stock;
+    const { alert } = this.state;
     return (
       <Container className="stock-container" style={{ color: "black" }}>
         <strong className="navbar-text mr-3">
@@ -88,6 +122,7 @@ class StockList extends RenderStockList {
         <Link className="badge badge-info" to="/balance">
           Sell some!
         </Link>
+        {alert ? this.renderAlert() : null}
         <div style={{ textAlign: "center" }}>
           {loading ? this.renderSpinner() : this.renderStockList()}
         </div>

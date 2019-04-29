@@ -13,6 +13,9 @@ class Balance extends Renders {
     isAuthenticated: PropTypes.bool
   };
   state = {
+    alert: false,
+    alertType: "success",
+    alertText: "Success!",
     type: "stocks",
     pageSize: 3,
     currentPage: 1,
@@ -38,8 +41,10 @@ class Balance extends Renders {
   }
 
   componentWillReceiveProps() {
-    this.setState({ myStocks: this.props.stock.balance.stocks });
-    this.setState({ count: this.props.stock.balance.stocks });
+    const { balance } = this.props.stock;
+    console.log(balance.stocks);
+    this.setState({ myStocks: balance.stocks });
+    this.setState({ count: balance.stocks });
   }
 
   handlePageChange = page => {
@@ -71,21 +76,55 @@ class Balance extends Renders {
     this.setState({ myStocks });
   };
 
-  handleSell = (amount, stockId) => {
+  handleSell = (amount, stockId, price) => {
+    const { balance } = this.props.stock;
+    const { myStocks } = this.state;
     const data = {
       stockId,
       amount
     };
-    this.props.dispatch(sellingStock(data));
+    myStocks.forEach(m => {
+      if (m.id === stockId && m.count >= amount) {
+        this.handleUpdate(amount, stockId);
+        this.props.dispatch(sellingStock(data));
+        balance.balance = balance.balance + price * amount;
+        this.setState({
+          balance: balance.balance,
+          alert: true,
+          alertText: "Success!",
+          alertType: "success"
+        });
+      } else {
+        this.setState({
+          alert: true,
+          alertText: "Недостаточно акций!",
+          alertType: "danger"
+        });
+      }
+    });
   };
 
+  renderAlert = () => {
+    const { alertType, alertText } = this.state;
+    return (
+      <Alert onClick={this.handleAlert} color={alertType}>
+        {alertText}
+      </Alert>
+    );
+  };
+
+  handleAlert = () => {
+    this.setState({ alert: false });
+  };
   render() {
     const { loading } = this.props.stock;
     const { length: count } = this.props.stock.balance.stocks;
     const { isAuthenticated } = this.props;
+    const { alert } = this.state;
 
     return (
       <Container style={{ color: "#2f3640" }}>
+        {alert ? this.renderAlert() : null}
         {!isAuthenticated ? <Alert color="danger">Please Login!</Alert> : null}
         {loading
           ? this.renderLoader()

@@ -42,9 +42,9 @@ class Buy extends Component {
 
   buyStock = () => {
     const { amount } = this.state;
-    const { stockId } = this.props;
+    const { stockId, price } = this.props;
     this.toggle();
-    this.props.onBuy(amount, stockId);
+    this.props.onBuy(amount, stockId, price);
   };
 
   render() {

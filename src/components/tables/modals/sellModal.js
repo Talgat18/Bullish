@@ -41,11 +41,10 @@ class Sell extends Component {
 
   sellStock = () => {
     const { amount } = this.state;
-    const { stockId } = this.props;
+    const { stockId, price } = this.props;
 
     this.toggle();
-    this.props.onSell(amount, stockId);
-    this.props.onUpdate(amount, stockId);
+    this.props.onSell(amount, stockId, price);
   };
 
   render() {
